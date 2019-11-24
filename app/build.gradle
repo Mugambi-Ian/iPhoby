@@ -1,0 +1,53 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+
+android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.iCropal.iPhobia"
+        minSdkVersion 22
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "pl.bclogic:pulsator4droid:1.0.3"
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    implementation 'com.pusher:pusher-java-client:1.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation("com.squareup.retrofit2:retrofit:2.4.0") {
+        exclude module: 'okhttp'
+    }
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.1'
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.0'
+    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
+    implementation('com.github.kibotu:KalmanRx:1.2.1') { transitive = true }
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.0-RC5'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.github.tombayley:ActivityCircularReveal:1.0.1'
+}
+repositories {
+    mavenCentral()
+}
