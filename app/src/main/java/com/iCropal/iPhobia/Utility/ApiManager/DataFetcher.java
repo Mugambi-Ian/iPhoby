@@ -3,12 +3,9 @@ package com.iCropal.iPhobia.Utility.ApiManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
-
-import com.google.gson.JsonArray;
 import com.iCropal.iPhobia.Utility.ApiManager.models.RequestResponse;
 
 import org.json.JSONObject;
-
 
 import java.io.IOException;
 
@@ -22,12 +19,14 @@ import static com.iCropal.iPhobia.Utility.Resources.Constants.API_Url;
 
 
 public class DataFetcher {
-    public static int RC_RecordUpdate = 0, RC_GetAllRecords = 1;
+    public static int RC_RecordUpdate = 0, RC_GetAllRecords = 1, Phobia_Records = 2;
+    public static int RC_startSession = 3;
+    public static int RC_endSession =4;
 
     public interface DataListener {
         void onSuccess(String data, int RequestCode);
 
-        void onFailure();
+        void onFailure(int RequestCode);
     }
 
     /* URL Methods */
@@ -60,50 +59,24 @@ public class DataFetcher {
         new FetchDataAsyncTask(request, listener, requestCode).execute();
     }
 
-    public void deleteData(String url, int requestCode) {
-        String data_url = API_Url;
-        Request.Builder requestBuilder = new Request.Builder();
 
-        Request request = requestBuilder.url(data_url).delete().build();
-
-        new FetchDataAsyncTask(request, listener, requestCode).execute();
-    }
 
 
     public void saveData(String url, int requestCode, JSONObject data) {
-        String data_url = API_Url;
 
-        Log.i(TAG, "Request URL: " + data_url);
+        Log.i(TAG, "Request URL: " + url);
         Log.i(TAG, "Data: " + data.toString());
 
         RequestBody requestBody = RequestBody.create(JSONMedia, data.toString());
         Request.Builder requestBuilder = new Request.Builder();
 
-        requestBuilder.url(data_url);
+        requestBuilder.url(url);
         requestBuilder.post(requestBody);
 
         Request request = requestBuilder.build();
 
         new FetchDataAsyncTask(request, listener, requestCode).execute();
     }
-
-   /* public void uploadPhoto(String url, String filename, String filepath) {
-        String data_url = API_Url;
-        Log.i(TAG, "Request URL: " + data_url);
-
-        RequestBody requestBody = new MultipartBuilder().type(MultipartBuilder.FORM)
-                .addFormDataPart("photo", filename,
-                        RequestBody.create(MEDIA_TYPE_PNG, new File(filepath)))
-                .build();
-
-        Request.Builder requestBuilder = new Request.Builder();
-
-        //requestBuilder.header("Content-Type", "application/x-www-form-urlencoded");
-        Request request = requestBuilder.url(data_url).post(requestBody).build();
-
-        new DataAsyncTask(request, listener).execute();
-
-    }*/
 
     private static class FetchDataAsyncTask extends AsyncTask<Void, Void, RequestResponse> implements DataAsyncTask {
 
@@ -140,11 +113,11 @@ public class DataFetcher {
         @Override
         public void onPostExecute(RequestResponse response) {
             super.onPostExecute(response);
-
-
             if (response == null || !response.isSuccessful()) {
                 Log.i(TAG, "No response");
-                callback.onFailure();
+                if (callback != null) {
+                    callback.onFailure(requestCode);
+                }
             } else {
                 Log.i(TAG, "Got response");
                 if (callback != null) {

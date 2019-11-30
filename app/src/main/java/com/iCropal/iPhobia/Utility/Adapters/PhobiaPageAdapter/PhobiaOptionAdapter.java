@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PhobiaAdapter extends PagerAdapter implements CardAdapter {
+public class PhobiaOptionAdapter extends PagerAdapter implements CardAdapter {
     private List<CardView> mViews;
     private ArrayList<PhobiaPage> mData;
     private float mBaseElevation;
     private Context con;
 
-    public PhobiaAdapter(ArrayList<PhobiaPage> mData, Context con) {
+    public PhobiaOptionAdapter(ArrayList<PhobiaPage> mData, Context con) {
         this.con = con;
         mViews = new ArrayList<>();
         this.mData = mData;

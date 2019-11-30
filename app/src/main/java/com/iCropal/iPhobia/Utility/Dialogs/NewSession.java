@@ -3,27 +3,19 @@ package com.iCropal.iPhobia.Utility.Dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
 import com.iCropal.iPhobia.DataModel.Phobia;
 import com.iCropal.iPhobia.DataModel.PhobiaPage;
 import com.iCropal.iPhobia.DataModel.Record;
 import com.iCropal.iPhobia.R;
-import com.iCropal.iPhobia.Utility.Adapters.PhobiaPageAdapter.PhobiaAdapter;
 import com.iCropal.iPhobia.Utility.Transmittors.RuntimeData;
-import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 
 import java.util.ArrayList;
-
-import static android.content.ContentValues.TAG;
 
 public class NewSession extends Dialog {
     private ResultListener resultListener;

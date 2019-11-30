@@ -10,13 +10,15 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
+        android:largeHeap="true"
         android:allowBackup="true"
         android:icon="@drawable/iphoby_logo"
         android:label="@string/app_name"
         android:roundIcon="@drawable/iphoby_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.iCropal.iPhobia.Ui.Home">
+        <activity android:name=".Ui.Settings"></activity>
+        <activity android:name=".Ui.Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,11 +26,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.iCropal.iPhobia.Ui.RecordHeartBeat"
+            android:name=".Ui.RecordHeartBeat"
             android:screenOrientation="sensorPortrait"
-            android:theme="@style/CircularReveal">
-
-        </activity>
+            android:theme="@style/CircularReveal"></activity>
     </application>
 
 </manifest>

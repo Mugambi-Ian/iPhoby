@@ -1,16 +1,19 @@
 package com.iCropal.iPhobia.DataModel;
 
 
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+
+import lecho.lib.hellocharts.model.AxisValue;
+import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.PointValue;
 
 public class Phobia {
     String phobiaId;
-    String phobiaPrice;
     String phobiaTitle;
     String phobiaPng;
 
@@ -21,12 +24,44 @@ public class Phobia {
         records.add(record);
     }
 
-    public String getPhobiaId() {
-        return phobiaId;
+    public List getYAxisData() {
+        ArrayList<Integer> x = new ArrayList<>();
+        for (Record r : records) {
+            x.add(Integer.valueOf(r.getRecordBmp()));
+        }
+        return x;
     }
 
-    public String getPhobiaPrice() {
-        return phobiaPrice;
+    public List getXAxisData() {
+        ArrayList<String> x = new ArrayList<>();
+        for (Record z : records) {
+            x.add("");
+        }
+        return x;
+    }
+
+    public ArrayList<Line> getLines(String c) {
+        List yAxisValues = new ArrayList();
+        List axisValues = new ArrayList();
+        for (int i = 0; i < getXAxisData().size(); i++) {
+            axisValues.add(i, new AxisValue(i).setLabel(String.valueOf(getXAxisData().get(i))));
+        }
+        for (int i = 0; i < getYAxisData().size(); i++) {
+            yAxisValues.add(new PointValue(i, Float.parseFloat(String.valueOf(getYAxisData().get(i)))));
+        }
+        Line y = new Line(yAxisValues);
+        ArrayList<Line> lines = new ArrayList<>();
+        if (c != null) {
+            y.setColor(Color.parseColor(c));
+        } else {
+            y.setColor(Color.parseColor("#9C27B0"));
+        }
+        lines.add(y);
+        return lines;
+    }
+
+    public String getPhobiaId() {
+        return phobiaId;
     }
 
     public String getPhobiaTitle() {
@@ -47,7 +82,7 @@ public class Phobia {
         this.records = records;
     }
 
-    public Record getHighestRecord(ArrayList<Record> records) {
+    public Record getHighestRecord() {
         if (records != null) {
             ArrayList<Record> recordsV = new ArrayList<>();
             for (Record r : records) {
@@ -60,7 +95,7 @@ public class Phobia {
         return null;
     }
 
-    public Record getLowestRecord(ArrayList<Record> records) {
+    public Record getLowestRecord() {
         if (records != null) {
             ArrayList<Record> recordsV = new ArrayList<>();
             for (Record r : records) {
@@ -96,6 +131,7 @@ public class Phobia {
         });
         return list;
     }
+
     public static boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
@@ -112,9 +148,6 @@ public class Phobia {
         this.phobiaId = phobiaId;
     }
 
-    public void setPhobiaPrice(String phobiaPrice) {
-        this.phobiaPrice = phobiaPrice;
-    }
 
     public void setPhobiaTitle(String phobiaTitle) {
         this.phobiaTitle = phobiaTitle;
@@ -128,4 +161,18 @@ public class Phobia {
         this.phobiaId = phobiaId;
     }
 
+    public String getAverageBpm() {
+        int x = 0;
+        if (records != null) {
+            int t = 0;
+            for (Record r : records) {
+                if (isInteger(r.getRecordBmp())) {
+                    x = x + (Integer.valueOf(r.getRecordBmp()));
+                    t++;
+                }
+            }
+            x = x / t;
+        }
+        return "" + x;
+    }
 }

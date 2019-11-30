@@ -35,12 +35,10 @@ public class ResultsScreen extends Dialog {
     }
 
     private void init(Phobia phobia, String text) {
-
         record = new Record("");
         record.setUserPhoneNumber(RuntimeData.dataBase.appUser.getPhoneNumber());
         record.setRecordBmp(text);
         record.setPhobiaId(phobia.getPhobiaId());
-        record.setRecordType("On");
         record.setRecordDecision("Ok");
         record.setRecordStatus("Reacting");
         findViewById(R.id.DRS_btnRestart).setOnClickListener(new View.OnClickListener() {

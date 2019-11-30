@@ -1,7 +1,12 @@
 package com.iCropal.iPhobia.Utility.Resources;
 
+import com.iCropal.iPhobia.Utility.Transmittors.RuntimeData;
+
 public class Constants {
-    public static final String API_Url = "https://iphoby.azurewebsites.net/api/BmpDataRecords";
+    public static final String API_Url = "https://iphoby.azurewebsites.net/api/BmpDataRecords?phoneNumber=";
+    public static final String Phobia_Url = "https://iphoby.azurewebsites.net/api/Phobias";
+    public static final String Sync_Url = "https://iphoby.azurewebsites.net/api/SyncDevice";
+    public static final String EndS_Url = "https://iphoby.azurewebsites.net/api/CallBack?phoneNumber=";
     public static String User_Database = "User_Database";
     public static String Phobia = "Phobia";
 

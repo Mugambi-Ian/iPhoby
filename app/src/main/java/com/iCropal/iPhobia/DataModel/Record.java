@@ -5,9 +5,44 @@ public class Record {
     private String recordBmp;
     String recordDecision;
     String recordStatus;
-    String recordType;
     String phobiaId;
     String userPhoneNumber;
+    String recordDate;
+    String recordTime;
+    String phobiaName;
+    String recordLength;
+
+    public String getRecordLength() {
+        return recordLength;
+    }
+
+    public void setRecordLength(String recordLength) {
+        this.recordLength = recordLength;
+    }
+
+    public String getRecordDate() {
+        return recordDate;
+    }
+
+    public void setRecordDate(String recordDate) {
+        this.recordDate = recordDate;
+    }
+
+    public String getRecordTime() {
+        return recordTime;
+    }
+
+    public void setRecordTime(String recordTime) {
+        this.recordTime = recordTime;
+    }
+
+    public String getPhobiaName() {
+        return phobiaName;
+    }
+
+    public void setPhobiaName(String phobiaName) {
+        this.phobiaName = phobiaName;
+    }
 
     public String getPhobiaId() {
         return phobiaId;
@@ -57,15 +92,20 @@ public class Record {
         this.recordStatus = recordStatus;
     }
 
-    public String getRecordType() {
-        return recordType;
-    }
-
-    public void setRecordType(String recordType) {
-        this.recordType = recordType;
-    }
 
     public Record(String recordId) {
         this.recordId = recordId;
+    }
+
+    public void setRecordDate(Object e_date) {
+        if (e_date != null) {
+            recordDate = e_date.toString();
+        }
+    }
+
+    public void setRecordTime(Object e_time) {
+        if (e_time != null) {
+            recordTime = e_time.toString();
+        }
     }
 }

@@ -8,6 +8,54 @@ public class User {
     private String phoneNumber;
     private ArrayList<Phobia> phobias;
 
+    public Phobia getHighestAvg() {
+        int x = 0;
+        int id = -1;
+        for (Phobia phobia : phobias) {
+            int z = Integer.parseInt(phobia.getAverageBpm());
+            if (x < z) {
+                id = phobias.indexOf(phobia);
+                x = z;
+            }
+        }
+        if (id != -1) {
+            return phobias.get(id);
+        }
+        return null;
+    }
+
+    public Phobia getMostSession() {
+        int x = 0;
+        int id = -1;
+        for (Phobia phobia : phobias) {
+            int z = phobia.records.size();
+            if (x < z) {
+                id = phobias.indexOf(phobia);
+                x = z;
+            }
+        }
+        if (id != -1) {
+            return phobias.get(id);
+        }
+        return null;
+    }
+
+    public Phobia getLowestAvg() {
+        int x = 200;
+        int id = -1;
+        for (Phobia phobia : phobias) {
+            int z = Integer.parseInt(phobia.getAverageBpm());
+            if (x > z) {
+                id = phobias.indexOf(phobia);
+                x = z;
+            }
+        }
+        if (id != -1) {
+            return phobias.get(id);
+        }
+        return null;
+    }
+
     public User(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }

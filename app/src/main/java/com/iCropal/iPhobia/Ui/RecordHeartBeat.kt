@@ -95,8 +95,10 @@ class RecordHeartBeat : AppCompatActivity() {
 
         dispose()
         subscription = CompositeDisposable()
-        heartBeatManager = HeartBeatManager()
-        heartBeatManager!!.init(this)
+        if (heartBeatManager == null) {
+            heartBeatManager = HeartBeatManager()
+            heartBeatManager!!.init(this)
+        }
 
     }
 
