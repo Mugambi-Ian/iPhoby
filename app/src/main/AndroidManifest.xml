@@ -10,14 +10,15 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:largeHeap="true"
         android:allowBackup="true"
         android:icon="@drawable/iphoby_logo"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@drawable/iphoby_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Ui.Settings"></activity>
+        <activity android:name=".Ui.Store"></activity>
+        <activity android:name=".Ui.Settings" />
         <activity android:name=".Ui.Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +29,7 @@
         <activity
             android:name=".Ui.RecordHeartBeat"
             android:screenOrientation="sensorPortrait"
-            android:theme="@style/CircularReveal"></activity>
+            android:theme="@style/CircularReveal" />
     </application>
 
 </manifest>

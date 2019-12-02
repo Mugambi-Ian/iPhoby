@@ -213,17 +213,28 @@ public class Home extends AppCompatActivity {
             ));
             new Handler().postDelayed(() -> v.setEnabled(true), 600);
         });
-
+        findViewById(R.id.AH_btnStore).setOnClickListener(v -> {
+            v.setEnabled(false);
+            CircularReveal.presentActivity(new CircularReveal.Builder(
+                    Home.this,
+                    v,
+                    new Intent(Home.this, Store.class),
+                    500
+            ));
+            new Handler().postDelayed(() -> v.setEnabled(true), 600);
+        });
         View btnSession = findViewById(R.id.AH_btnSession);
         btnSession.setOnClickListener(v -> {
             v.setTag(true);
             if (isOnline()) {
+                v.setEnabled(false);
                 CircularReveal.presentActivity(new CircularReveal.Builder(
                         Home.this,
-                        btnSession,
+                        v,
                         new Intent(Home.this, RecordHeartBeat.class),
                         500
                 ));
+                new Handler().postDelayed(() -> v.setEnabled(true), 600);
             } else {
                 Toast.makeText(Home.this, "You'll need an active internet connection for this.", Toast.LENGTH_LONG).show();
             }

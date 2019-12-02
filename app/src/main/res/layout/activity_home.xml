@@ -10,11 +10,11 @@
     tools:context="com.iCropal.iPhobia.Ui.Home">
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/AH_layoutHome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -155,6 +155,7 @@
                         layout="@layout/layout_home_analysis" />
 
                     <RelativeLayout
+                        android:id="@+id/AH_btnStore"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_alignParentBottom="true"
