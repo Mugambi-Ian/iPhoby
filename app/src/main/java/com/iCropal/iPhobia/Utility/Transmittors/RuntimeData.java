@@ -2,8 +2,7 @@ package com.iCropal.iPhobia.Utility.Transmittors;
 
 
 import com.iCropal.iPhobia.DataModel.DataBase;
-import com.iCropal.iPhobia.DataModel.Record;
-import com.iCropal.iPhobia.Ui.Home;
+import com.iCropal.iPhobia.Ui.Home.Home;
 
 public class RuntimeData {
     public static DataBase dataBase;

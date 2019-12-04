@@ -1,11 +1,10 @@
-package com.iCropal.iPhobia.Ui;
+package com.iCropal.iPhobia.Ui.RecordsUi;
 
 import android.content.Intent;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
@@ -57,10 +56,9 @@ public class HeartBeatManager {
     private Phobia sessionPhobia;
     private CircularReveal circularReveal;
     private View videoCover;
-    private long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L;
+    private long MillisecondTime;
     private int Seconds;
     private int Minutes;
-    private Session session;
     private boolean startSession = false;
     private ArrayList<Session> sessions;
     private String sessionLength;
@@ -147,33 +145,37 @@ public class HeartBeatManager {
                     handler.postDelayed(this, delay);
                 } else {
                     endSession();
+                    handler.removeCallbacks(this);
                 }
             }
         }, delay);
     }
 
     private void initData() {
-        Toast.makeText(recordHeartBeat, "Syncing...", Toast.LENGTH_SHORT).show();
-        session = new Session(RuntimeData.dataBase.appUser.getPhoneNumber(), Time.getTime(), "", true, sessionPhobia.getPhobiaTitle());
-        connection.saveData(Constants.Sync_Url, DataFetcher.RC_startSession, DataBase.createSessionObject(session));
+        recordHeartBeat.startWithPermissionCheck();
         recordHeartBeat.findViewById(R.id.ARHB_layout).setVisibility(View.VISIBLE);
         recordHeartBeat.findViewById(R.id.ARHB_template).setVisibility(View.GONE);
-        video = recordHeartBeat.findViewById(R.id.ARHB_videoView);
-        videoCover = recordHeartBeat.findViewById(R.id.ARHB_beatCover);
-        vibrator = (Vibrator) recordHeartBeat.getSystemService(VIBRATOR_SERVICE);
-        vibratorListener();
+        recordHeartBeat.findViewById(R.id.ARHB_bpmPhobia).setVisibility(View.VISIBLE);
         recordHeartBeat.findViewById(R.id.ARHB_btnCancel).setOnClickListener(
                 v -> onFinish()
         );
+
+        Toast.makeText(recordHeartBeat, "Syncing...", Toast.LENGTH_SHORT).show();
+        Session session = new Session(RuntimeData.dataBase.appUser.getPhoneNumber(), Time.getTime(), "", true, sessionPhobia.getPhobiaTitle());
+        connection.saveData(Constants.Sync_Url, DataFetcher.RC_startSession, DataBase.createSessionObject(session));
+        vibrator = (Vibrator) recordHeartBeat.getSystemService(VIBRATOR_SERVICE);
+        ((TextView) recordHeartBeat.findViewById(R.id.ARHB_bpmPhobia)).setText(sessionPhobia.getPhobiaTitle());
+        vibratorListener();
+
+        Uri videoPath = Uri.parse("android.resource://" + recordHeartBeat.getPackageName() + "/" + R.raw.beat);
+        video = recordHeartBeat.findViewById(R.id.ARHB_videoView);
+        videoCover = recordHeartBeat.findViewById(R.id.ARHB_beatCover);
         video.setOnPreparedListener(mp -> {
             mp.setLooping(true);
             mp.start();
         });
-        Uri videoPath = Uri.parse("android.resource://" + recordHeartBeat.getPackageName() + "/" + R.raw.beat);
         video.setVideoURI(videoPath);
-        recordHeartBeat.startWithPermissionCheck();
-        ((TextView) recordHeartBeat.findViewById(R.id.ARHB_bpmPhobia)).setText(sessionPhobia.getPhobiaTitle());
-        recordHeartBeat.findViewById(R.id.ARHB_bpmPhobia).setVisibility(View.VISIBLE);
+
         TextView hView = recordHeartBeat.findViewById(R.id.ARHB_bpmH);
         TextView lView = recordHeartBeat.findViewById(R.id.ARHB_bpmL);
         if (sessionPhobia.getRecords() != null) {
@@ -207,7 +209,6 @@ public class HeartBeatManager {
     }
 
     private void getSessionPhobia() {
-        Log.i(TAG, "getSessionPhobia: ");
         if (RuntimeData.dataBase != null) {
             new NewSession(recordHeartBeat, R.style.DialogBox, RuntimeData.dataBase.phobias, new NewSession.ResultListener() {
                 @Override
@@ -233,10 +234,6 @@ public class HeartBeatManager {
     public void setBpm(HeartRateOmeter.Bpm bpm) {
         if (!stopReading) {
             ((TextView) recordHeartBeat.findViewById(R.id.ARHB_bpmTextView)).setText("" + bpm.getValue());
-            if (startSession) {
-                startSession();
-                startSession = false;
-            }
         } else {
             Camera cam = Camera.open();
             Camera.Parameters p = cam.getParameters();
@@ -294,7 +291,6 @@ public class HeartBeatManager {
         timer = recordHeartBeat.findViewById(R.id.ARHB_bpmTimer);
         String text = "00:00";
         timer.setText(text);
-        StartTime = SystemClock.uptimeMillis();
         timerHandler = new Handler();
         timerRunnable = new Runnable() {
             @Override
@@ -304,8 +300,13 @@ public class HeartBeatManager {
                     Seconds = (int) (MillisecondTime / 1000);
                     Minutes = Seconds / 60;
                     Seconds = Seconds % 60;
-                    timer.setText("" + String.format("%02d", Minutes) + ":"
-                            + String.format("%02d", Seconds));
+                    String text;
+                    if (Minutes <= 60) {
+                        text = String.format("%02d", Seconds) + " Seconds";
+                    } else {
+                        text = String.format("%02d", Minutes) + " Min " + String.format("%02d", Seconds) + " Seconds";
+                    }
+                    timer.setText(text);
                 }
                 timerHandler.postDelayed(this, 1000);
             }
@@ -387,6 +388,10 @@ public class HeartBeatManager {
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 x.setBackground(drawables.btnOn);
+            }
+            if (startSession) {
+                startSession();
+                startSession = false;
             }
             y.setVisibility(View.INVISIBLE);
             x.startAnimation(animations.fadeIn);

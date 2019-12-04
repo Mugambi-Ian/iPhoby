@@ -1,10 +1,9 @@
-package com.iCropal.iPhobia.Ui
+package com.iCropal.iPhobia.Ui.RecordsUi
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -35,50 +34,31 @@ class RecordHeartBeat : AppCompatActivity() {
             checkPermissions(REQUEST_CAMERA_PERMISSION, Manifest.permission.CAMERA)
             return
         }
-
         val kalman = JKalman(2, 1)
-
-        // measurement [x]
         val m = Matrix(1, 1)
-
-        // transitions for x, dx
         val tr = arrayOf(doubleArrayOf(1.0, 0.0), doubleArrayOf(0.0, 1.0))
         kalman.transition_matrix = Matrix(tr)
-
-        // 1s somewhere?
         kalman.error_cov_post = kalman.error_cov_post.identity()
         val h = HeartRateOmeter()
         val bpmUpdates = h.withAverageAfterSeconds(3)
                 .setFingerDetectionListener(this::onFingerChange)
                 .bpmUpdates(preview)
                 .subscribe({
-
                     if (it.value == 0)
                         return@subscribe
-
                     m.set(0, 0, it.value.toDouble())
-
-                    // state [x, dx]
                     val s = kalman.Predict()
-
-                    // corrected state [x, dx]
                     val c = kalman.Correct(m)
 
                     val bpm = it.copy(value = c.get(0, 0).toInt())
-                    Log.v("HeartRateOmeter", "[onBpm] ${it.value} => ${bpm.value}")
                     onBpm(bpm)
                 }, Throwable::printStackTrace)
-
-
         heartBeatManager!!.setHeartRateOMeter(h)
-
-
         subscription?.add(bpmUpdates)
     }
 
     @SuppressLint("SetTextI18n")
     private fun onBpm(bpm: HeartRateOmeter.Bpm) {
-        // Log.v("HeartRateOmeter", "[onBpm] $bpm")
         heartBeatManager!!.setBpm(bpm)
         label.text = "$bpm"
     }
@@ -88,11 +68,9 @@ class RecordHeartBeat : AppCompatActivity() {
         heartBeatManager!!.updateVibration(fingerDetected)
     }
 
-// region lifecycle
 
     override fun onResume() {
         super.onResume()
-
         dispose()
         subscription = CompositeDisposable()
         if (heartBeatManager == null) {
@@ -112,12 +90,16 @@ class RecordHeartBeat : AppCompatActivity() {
             subscription?.dispose()
     }
 
-// endregion
-
-// region permission
+    override fun onStop() {
+        if (heartBeatManager != null) {
+            heartBeatManager!!.onFinish()
+            heartBeatManager = null
+        }
+        super.onStop()
+    }
 
     companion object {
-        private val REQUEST_CAMERA_PERMISSION = 123
+        private const val REQUEST_CAMERA_PERMISSION = 123
     }
 
     private fun checkPermissions(callbackId: Int, vararg permissionsId: String) {
@@ -151,5 +133,4 @@ class RecordHeartBeat : AppCompatActivity() {
         }
     }
 
-// endregion
 }

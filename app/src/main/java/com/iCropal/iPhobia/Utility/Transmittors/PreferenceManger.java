@@ -17,13 +17,19 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class PreferenceManger {
     SharedPreferences databaseReference;
+    SharedPreferences userIdPreferences;
 
     public PreferenceManger(Context context) {
         databaseReference = context.getSharedPreferences(Constants.User_Database, MODE_PRIVATE);
+        userIdPreferences = context.getSharedPreferences(Constants.User_PhoneNumber, MODE_PRIVATE);
     }
 
     public String getUserDatabase() {
         return databaseReference.getString(Constants.User_Database, null);
+    }
+
+    public String getPhoneNumber() {
+        return userIdPreferences.getString(Constants.User_PhoneNumber,null);
     }
 
     public void setUserDatabase(User appUser) {

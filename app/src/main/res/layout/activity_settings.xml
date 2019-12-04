@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".Ui.Settings">
+    tools:context=".Ui.Settings.Settings">
 
     <ImageView
         android:id="@+id/AH_logo"

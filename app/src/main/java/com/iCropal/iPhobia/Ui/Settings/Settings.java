@@ -1,4 +1,4 @@
-package com.iCropal.iPhobia.Ui;
+package com.iCropal.iPhobia.Ui.Settings;
 
 import android.os.Bundle;
 

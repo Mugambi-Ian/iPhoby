@@ -1,4 +1,4 @@
-package com.iCropal.iPhobia.Ui;
+package com.iCropal.iPhobia.Ui.Home;
 
 
 import android.content.Context;
@@ -25,7 +25,11 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.iCropal.iPhobia.DataModel.DataBase;
 import com.iCropal.iPhobia.DataModel.Phobia;
 import com.iCropal.iPhobia.R;
-import com.iCropal.iPhobia.Utility.Adapters.PhobiaAdapters.PhobiaAnalysisAdapter;
+import com.iCropal.iPhobia.Ui.RecordsUi.RecordHeartBeat;
+import com.iCropal.iPhobia.Ui.Settings.Settings;
+import com.iCropal.iPhobia.Ui.Store.Store;
+import com.iCropal.iPhobia.Ui.User.UserRegistration;
+import com.iCropal.iPhobia.Utility.Adapters.PhobiaAdapter.PhobiaAnalysisAdapter;
 import com.iCropal.iPhobia.Utility.ApiManager.DataFetcher;
 import com.iCropal.iPhobia.Utility.Resources.Animations;
 import com.iCropal.iPhobia.Utility.Resources.Constants;
@@ -83,6 +87,7 @@ public class Home extends AppCompatActivity {
         fetcher = new DataFetcher();
         animations = new Animations(this);
         logoImageView = findViewById(R.id.AH_logo);
+        phobiaOptions = findViewById(R.id.LHA_cardPager);
         RuntimeData.home = this;
         preferenceManger = new PreferenceManger(Home.this);
         RuntimeData.referenceManger = preferenceManger;
@@ -90,74 +95,75 @@ public class Home extends AppCompatActivity {
         waveLoader.setInterpolator(new LinearInterpolator());
         waveLoader.setAnimDuration(1000);
         waveLoader.setDelayDuration(100);
-        if (isOnline()) {
-            fetcher.setResultListener(new DataFetcher.DataListener() {
-                @Override
-                public void onSuccess(String data, int r) {
-                    try {
-                        Log.i(TAG, "" + r);
-                        if (r == DataFetcher.RC_GetAllRecords) {
-                            RuntimeData.dataBase = new DataBase(DataBase.getRecords(new JSONArray(data)));
-                            RuntimeData.dataBase.userRecords = DataBase.getRecords(new JSONArray(data));
-                            if (analysisAdapter != null) {
-                                ArrayList<Phobia> phobias = new ArrayList<>();
-                                for (Phobia p : RuntimeData.dataBase.appUser.getPhobias()) {
-                                    if (p.getRecords().size() >= 3) {
-                                        phobias.add(p);
-                                    }
-                                }
-                                analysisAdapter = new PhobiaAnalysisAdapter(phobias, Home.this, new PhobiaAnalysisAdapter.AdapterInterface() {
-                                    @Override
-                                    public void onItemClick(Phobia phobia, int position) {
-                                        openPhobiaDetails(phobia, position);
-                                    }
-                                });
-                                if (phobias.size() == 0) {
-                                    phobiaOptions.setVisibility(View.GONE);
-                                } else {
-                                    phobiaOptions.setVisibility(View.VISIBLE);
-                                }
-                                if (RuntimeData.dataBase.userRecords.size() != 0) {
-                                    loadData();
-                                } else {
-                                    emptyRecords();
-                                }
-                                phobiaOptions.setAdapter(analysisAdapter);
-                            }
-                            preferenceManger.setUserDatabase(RuntimeData.dataBase.appUser);
-                            Log.i(TAG, "onApiT: " + preferenceManger.getUserDatabase());
-                        }
-                        if (r == DataFetcher.Phobia_Records) {
-                            Log.i(TAG, data);
-                        }
-                        Home.this.initApp();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(int r) {
-                    String userDataBase = preferenceManger.getUserDatabase();
-                    Log.i(TAG, "onApiF: " + userDataBase);
-                    //RuntimeData.dataBase =new DataBase(DataBase.getRecords(DataBase.createJsonArray(userDataBase)));
-                    //initApp();
+        if (preferenceManger.getPhoneNumber() == null) {
+            startRegistration();
+        } else {
+            findViewById(R.id.AH_btnSession).setOnClickListener(v -> {
+                if (v.getTag() == null) {
+                    updateDatabase();
                 }
             });
-            fetcher.getData(Constants.API_Url + "?phoneNumber=0715643789", DataFetcher.RC_GetAllRecords);
-            fetcher.getData(Constants.Phobia_Url, DataFetcher.Phobia_Records);
+            if (isOnline()) {
+                fetcher.setResultListener(new DataFetcher.DataListener() {
+                    @Override
+                    public void onSuccess(String data, int r) {
+                        try {
+                            if (r == DataFetcher.RC_GetAllRecords) {
+                                RuntimeData.dataBase = new DataBase(DataBase.getRecords(new JSONArray(data)));
+                                RuntimeData.dataBase.userRecords = DataBase.getRecords(new JSONArray(data));
+                                preferenceManger.setUserDatabase(RuntimeData.dataBase.appUser);
+                                       }
+                            if (r == DataFetcher.Phobia_Records) {
+                             //   Log.i(TAG, data);
+                            }
+                            Home.this.initApp();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-        }
-        findViewById(R.id.AH_btnSession).setOnClickListener(v -> {
-            if (v.getTag() == null) {
-                updateDatabase();
-                Toast.makeText(Home.this, "Initializing", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onFailure(int r) {
+                        String userDataBase = preferenceManger.getUserDatabase();
+                        Log.i(TAG, "onApiF: " + userDataBase);
+                        //RuntimeData.dataBase =new DataBase(DataBase.getRecords(DataBase.createJsonArray(userDataBase)));
+                        //initApp();
+                    }
+                });
+                fetcher.getData(Constants.API_Url + preferenceManger.getPhoneNumber(), DataFetcher.RC_GetAllRecords);
+                fetcher.getData(Constants.Phobia_Url, DataFetcher.Phobia_Records);
+
+            } else {
+                String userDataBase = preferenceManger.getUserDatabase();
+                Log.i(TAG, "onIntF: " + userDataBase);
             }
-        });
-        if (!isOnline()) {
-            String userDataBase = preferenceManger.getUserDatabase();
-            Log.i(TAG, "onIntF: " + userDataBase);
         }
+
+    }
+
+    private void startRegistration() {
+        View x = findViewById(R.id.AH_logoS);
+        logoImageView.setVisibility(View.GONE);
+        findViewById(R.id.AH_loaderHeader).setVisibility(View.GONE);
+        new Handler().postDelayed(() -> {
+            x.setVisibility(View.VISIBLE);
+            YoYo.with(Techniques.Pulse)
+                    .duration(500)
+                    .repeat(1)
+                    .playOn(findViewById(R.id.AH_logoS));
+
+            new Handler().postDelayed(() -> initRegistration(), 2000);
+        }, 300);
+        x.setVisibility(View.VISIBLE);
+        x.setAnimation(animations.slideUp);
+        x.startAnimation(AnimationUtils.loadAnimation(Home.this, R.anim.fade_in_extra));
+    }
+
+    private void initRegistration() {
+        new Handler().postDelayed(() -> {
+            startActivity(new Intent(this, UserRegistration.class));
+            finish();
+        }, 300);
     }
 
     private void emptyRecords() {
@@ -203,6 +209,51 @@ public class Home extends AppCompatActivity {
             x.setAnimation(animations.slideUp);
             x.startAnimation(AnimationUtils.loadAnimation(Home.this, R.anim.fade_in_extra));
         }
+        if (analysisAdapter != null) {
+            ArrayList<Phobia> phobias = new ArrayList<>();
+            for (Phobia p : RuntimeData.dataBase.appUser.getPhobias()) {
+                if (p.getRecords().size() >= 3) {
+                    phobias.add(p);
+                }
+            }
+            analysisAdapter = new PhobiaAnalysisAdapter(phobias, Home.this, new PhobiaAnalysisAdapter.AdapterInterface() {
+                @Override
+                public void onItemClick(Phobia phobia, int position) {
+                    openPhobiaDetails(phobia, position);
+                }
+            });
+            if (phobias.size() == 0) {
+                phobiaOptions.setVisibility(View.GONE);
+            } else {
+                phobiaOptions.setVisibility(View.VISIBLE);
+            }
+            if (RuntimeData.dataBase.userRecords.size() != 0) {
+                loadData();
+            } else {
+                emptyRecords();
+            }
+            phobiaOptions.setAdapter(analysisAdapter);
+        }
+        if (RuntimeData.dataBase != null) {
+            ArrayList<Phobia> phobias = new ArrayList<>();
+            for (Phobia p : RuntimeData.dataBase.appUser.getPhobias()) {
+                if (p.getRecords().size() >= 3) {
+                    phobias.add(p);
+                }
+            }
+            analysisAdapter = new PhobiaAnalysisAdapter(phobias, Home.this, this::openPhobiaDetails);
+            if (phobias.size() == 0) {
+                phobiaOptions.setVisibility(View.GONE);
+            } else {
+                phobiaOptions.setVisibility(View.VISIBLE);
+            }
+            phobiaOptions.setAdapter(analysisAdapter);
+            if (RuntimeData.dataBase.userRecords.size() != 0) {
+                loadData();
+            } else {
+                emptyRecords();
+            }
+        }
         findViewById(R.id.AH_btnSettings).setOnClickListener(v -> {
             v.setEnabled(false);
             CircularReveal.presentActivity(new CircularReveal.Builder(
@@ -223,49 +274,6 @@ public class Home extends AppCompatActivity {
             ));
             new Handler().postDelayed(() -> v.setEnabled(true), 600);
         });
-        View btnSession = findViewById(R.id.AH_btnSession);
-        btnSession.setOnClickListener(v -> {
-            v.setTag(true);
-            if (isOnline()) {
-                v.setEnabled(false);
-                CircularReveal.presentActivity(new CircularReveal.Builder(
-                        Home.this,
-                        v,
-                        new Intent(Home.this, RecordHeartBeat.class),
-                        500
-                ));
-                new Handler().postDelayed(() -> v.setEnabled(true), 600);
-            } else {
-                Toast.makeText(Home.this, "You'll need an active internet connection for this.", Toast.LENGTH_LONG).show();
-            }
-        });
-        phobiaOptions = findViewById(R.id.LHA_cardPager);
-        if (RuntimeData.dataBase != null) {
-            ArrayList<Phobia> phobias = new ArrayList<>();
-            for (Phobia p : RuntimeData.dataBase.appUser.getPhobias()) {
-                if (p.getRecords().size() >= 3) {
-                    phobias.add(p);
-                }
-            }
-            analysisAdapter = new PhobiaAnalysisAdapter(phobias, Home.this, new PhobiaAnalysisAdapter.AdapterInterface() {
-                @Override
-                public void onItemClick(Phobia phobia, int position) {
-                    openPhobiaDetails(phobia, position);
-                }
-            });
-            if (phobias.size() == 0) {
-                phobiaOptions.setVisibility(View.GONE);
-            } else {
-                phobiaOptions.setVisibility(View.VISIBLE);
-            }
-            phobiaOptions.setAdapter(analysisAdapter);
-            if (RuntimeData.dataBase.userRecords.size() != 0) {
-                loadData();
-            } else {
-                emptyRecords();
-            }
-        }
-
     }
 
     private void goHome() {

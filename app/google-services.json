@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "208268418693",
+    "firebase_url": "https://iphoby-live.firebaseio.com",
+    "project_id": "iphoby-live",
+    "storage_bucket": "iphoby-live.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208268418693:android:f70bcdea3a0979a6c093ec",
+        "android_client_info": {
+          "package_name": "com.iCropal.iPhobia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208268418693-6oacakegup3v4pet64bqmt524h2avu1s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvudkGVtQ9ZzjkBB34633BUOwb1AmRd1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208268418693-6oacakegup3v4pet64bqmt524h2avu1s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,12 +8,13 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:background="@android:color/white"
         app:cardCornerRadius="20dp"
-        android:layout_margin="5dp"
         app:cardElevation="3dp">
 
         <RelativeLayout
+            android:id="@+id/LIS_btnPhobia"
             android:layout_width="match_parent"
             android:layout_height="135dp"
             android:layout_centerInParent="true"

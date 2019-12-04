@@ -1,4 +1,4 @@
-package com.iCropal.iPhobia.Ui;
+package com.iCropal.iPhobia.Ui.Home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.iCropal.iPhobia.DataModel.Phobia;
 import com.iCropal.iPhobia.R;
-import com.iCropal.iPhobia.Utility.Adapters.PhobiaAdapters.PhobiaDetailsAdapter;
+import com.iCropal.iPhobia.Utility.Adapters.PhobiaAdapter.PhobiaDetailsAdapter;
 import com.iCropal.iPhobia.Utility.Transmittors.RuntimeData;
 
 import java.util.ArrayList;
@@ -20,11 +20,11 @@ public class PhobiaAnalysis extends Fragment {
     private AnalysisInterface analysisInterface;
     private ArrayList<Phobia> phobias;
 
-    void setAnalysisInterface(AnalysisInterface analysisInterface) {
+    public void setAnalysisInterface(AnalysisInterface analysisInterface) {
         this.analysisInterface = analysisInterface;
     }
 
-    void openPhobia(int p) {
+    public void openPhobia(int p) {
         viewPager.setCurrentItem(p, false);
     }
 

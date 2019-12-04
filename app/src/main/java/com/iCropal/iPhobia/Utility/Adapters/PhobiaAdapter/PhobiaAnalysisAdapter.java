@@ -1,4 +1,4 @@
-package com.iCropal.iPhobia.Utility.Adapters.PhobiaAdapters;
+package com.iCropal.iPhobia.Utility.Adapters.PhobiaAdapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -92,12 +92,7 @@ public class PhobiaAnalysisAdapter extends PagerAdapter {
         ((TextView) view.findViewById(R.id.PPA_avg)).setText(x.phobia.getAverageBpm());
         ((TextView) view.findViewById(R.id.PPA_low)).setText(x.phobia.getLowestRecord().getRecordBmp());
         ((TextView) view.findViewById(R.id.PPA_h)).setText(x.phobia.getHighestRecord().getRecordBmp());
-        view.findViewById(R.id.PPA_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapterInterface.onItemClick(x.phobia,position);
-            }
-        });
+        view.findViewById(R.id.PPA_btn).setOnClickListener(v -> adapterInterface.onItemClick(x.phobia, position));
         container.addView(view, 0);
         return view;
     }

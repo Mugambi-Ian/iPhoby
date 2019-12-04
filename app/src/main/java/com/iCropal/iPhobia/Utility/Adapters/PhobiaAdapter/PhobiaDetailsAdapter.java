@@ -1,4 +1,4 @@
-package com.iCropal.iPhobia.Utility.Adapters.PhobiaAdapters;
+package com.iCropal.iPhobia.Utility.Adapters.PhobiaAdapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

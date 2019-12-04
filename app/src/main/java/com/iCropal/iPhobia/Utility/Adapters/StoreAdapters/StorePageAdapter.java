@@ -27,6 +27,7 @@ import java.util.ArrayList;
 public class StorePageAdapter extends PagerAdapter {
 
     private final ViewPager pager;
+    private final StoreAdapterInterface adapterInterface;
     private ArrayList<StoreItemX> mData;
     private LayoutInflater layoutInflater;
     private Context context;
@@ -57,8 +58,9 @@ public class StorePageAdapter extends PagerAdapter {
         return "";
     }
 
-    public StorePageAdapter(ArrayList<StoreItem> mData, Context context, ViewPager pager) {
+    public StorePageAdapter(ArrayList<StoreItem> mData, Context context, ViewPager pager, StoreAdapterInterface adapterInterface) {
         this.pager = pager;
+        this.adapterInterface = adapterInterface;
         ArrayList<StoreItemX> storeItemXES = new ArrayList<>();
         storeItemXES.add(new StoreItemX(null, "Welcome"));
         for (StoreItem x : mData) {
@@ -144,8 +146,15 @@ public class StorePageAdapter extends PagerAdapter {
             PhobiaItemX x = getItem(position);
             ((TextView) parentView.findViewById(R.id.LIS_phobiaName)).setText(x.phobia.getPhobiaTitle());
             Glide.with(getContext()).load(x.drawable).into((ImageView) parentView.findViewById(R.id.LIS_phobiaDp));
+            parentView.findViewById(R.id.LIS_btnPhobia).setOnClickListener(v -> {
+                adapterInterface.openPhobia(x.phobia);
+            });
             return parentView;
         }
+    }
+
+    public interface StoreAdapterInterface {
+        void openPhobia(Phobia phobia);
     }
 
     @Override
