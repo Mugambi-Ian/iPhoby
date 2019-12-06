@@ -26,6 +26,7 @@ import java.util.ArrayList;
 public class MyPhobias extends Fragment {
     private ArrayList<PhobiaItemX> phobias;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,7 +35,17 @@ public class MyPhobias extends Fragment {
         ListView listView = parentView.findViewById(R.id.FMP_listView);
         PhobiaAdapter phobiaAdapter = new PhobiaAdapter(getContext(), R.layout.fragment_my_phobias, phobias);
         listView.setAdapter(phobiaAdapter);
+
         return parentView;
+    }
+
+    public void setMyPhobiaInterface(MyPhobiaInterface myPhobiaInterface) {
+        this.myPhobiaInterface = myPhobiaInterface;
+    }
+
+    public interface MyPhobiaInterface {
+        void onPhobiaSelected(Phobia phobia);
+
     }
 
     private ArrayList<PhobiaItemX> getData(ArrayList<Phobia> mData) {
@@ -72,10 +83,13 @@ public class MyPhobias extends Fragment {
         }
     }
 
+    MyPhobiaInterface myPhobiaInterface;
+
     private class PhobiaAdapter extends ArrayAdapter<PhobiaItemX> {
         PhobiaAdapter(@NonNull Context context, int resource, @NonNull ArrayList<PhobiaItemX> objects) {
             super(context, resource, objects);
         }
+
 
         @NonNull
         @Override
@@ -87,6 +101,14 @@ public class MyPhobias extends Fragment {
             PhobiaItemX x = getItem(position);
             ((TextView) parentView.findViewById(R.id.LIS_phobiaName)).setText(x.phobia.getPhobiaTitle());
             Glide.with(getContext()).load(x.drawable).into((ImageView) parentView.findViewById(R.id.LIS_phobiaDp));
+            parentView.findViewById(R.id.LIS_btnPhobia).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (myPhobiaInterface != null) {
+                        myPhobiaInterface.onPhobiaSelected(x.phobia);
+                    }
+                }
+            });
             return parentView;
         }
     }

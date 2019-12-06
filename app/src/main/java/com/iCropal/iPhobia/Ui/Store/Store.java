@@ -38,7 +38,7 @@ public class Store extends AppCompatActivity {
         boolean p = phobiaView.getVisibility() == View.VISIBLE,
                 ps = myPhobiasView.getVisibility() == View.VISIBLE;
         if (p || ps) {
-            goHome();
+            goHome(true);
         } else {
             circularReveal.unRevealActivity(this);
             finish();
@@ -64,26 +64,11 @@ public class Store extends AppCompatActivity {
         StorePageAdapter pageAdapter = new StorePageAdapter(storeItems, this, storePager, this::openPhobia);
         storePager.setAdapter(pageAdapter);
         View.OnClickListener ftListener = v -> {
-            TextView x = (TextView) v;
-            TextView s = findViewById(R.id.AIS_ftStore);
-            TextView p = findViewById(R.id.AIS_ftPhobias);
-            switch (x.getId()) {
+            switch (v.getId()) {
                 case R.id.AIS_ftStore:
-                    x.setEnabled(false);
-                    x.setTextColor(Color.BLACK);
-                    x.setBackground(drawables.bgFtL);
-                    p.setTextColor(Color.WHITE);
-                    p.setEnabled(true);
-                    p.setBackground(drawables.bgE);
-                    goHome();
+                    goHome(true);
                     break;
                 case R.id.AIS_ftPhobias:
-                    x.setEnabled(false);
-                    x.setTextColor(Color.BLACK);
-                    x.setBackground(drawables.bgFtR);
-                    s.setTextColor(Color.WHITE);
-                    s.setEnabled(true);
-                    s.setBackground(drawables.bgE);
                     openMyPhobias();
                     break;
             }
@@ -108,14 +93,26 @@ public class Store extends AppCompatActivity {
     }
 
 
-    private void goHome() {
+    private void goHome(boolean anim) {
+        TextView x = findViewById(R.id.AIS_ftStore);
+        TextView p = findViewById(R.id.AIS_ftPhobias);
+        p.setEnabled(true);
+        p.setTextColor(Color.BLACK);
+        p.setBackground(drawables.bgFtR);
+        x.setTextColor(Color.WHITE);
+        x.setEnabled(false);
+        x.setBackground(drawables.bgE);
+        if (!anim) {
+            storePager.setCurrentItem(0, false);
+        }
         txtTitle.setText("iPhoby Store");
         layoutFt.setVisibility(View.VISIBLE);
         phobiaView.setVisibility(View.GONE);
         myPhobiasView.setVisibility(View.GONE);
         storeView.setVisibility(View.VISIBLE);
-        storeView.startAnimation(animations.fadeIn);
-        storePager.setCurrentItem(0, false);
+        if (anim) {
+            storeView.startAnimation(animations.fadeIn);
+        }
         fragmentTransaction = fragmentManager.beginTransaction();
         if (phobiaS != null) {
             fragmentTransaction.remove(phobiaS).commitAllowingStateLoss();
@@ -128,8 +125,17 @@ public class Store extends AppCompatActivity {
     }
 
     private void openMyPhobias() {
+        TextView s = findViewById(R.id.AIS_ftStore);
+        TextView p = findViewById(R.id.AIS_ftPhobias);
+        s.setEnabled(true);
+        s.setTextColor(Color.BLACK);
+        s.setBackground(drawables.bgFtL);
+        p.setTextColor(Color.WHITE);
+        p.setEnabled(false);
+        p.setBackground(drawables.bgE);
         txtTitle.setText("My Phobias");
         myPhobias = new MyPhobias();
+        storePager.setCurrentItem(0);
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.AIS_myPhobiaContainer, myPhobias);
         fragmentTransaction.commitAllowingStateLoss();
@@ -137,5 +143,13 @@ public class Store extends AppCompatActivity {
         myPhobiasView.startAnimation(animations.fadeIn);
         myPhobiasView.setVisibility(View.VISIBLE);
         storeView.setVisibility(View.GONE);
+        myPhobias.setMyPhobiaInterface(new MyPhobias.MyPhobiaInterface() {
+            @Override
+            public void onPhobiaSelected(Phobia phobia) {
+                goHome(false);
+                openPhobia(phobia);
+            }
+
+        });
     }
 }

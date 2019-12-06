@@ -7,17 +7,17 @@ public class Constants {
     public static final String EndS_Url = "https://iphoby.azurewebsites.net/api/CallBack?phoneNumber=";
     public static String User_Database = "User_Database";
     public static String Phobia = "Phobia";
-    public static String User_PhoneNumber = "UserPhoneNumber";
+    public static String UserPhoneNumber = "UserPhoneNumber";
+    public static String UserName = "UserName", TnDP = "tbDp", DateOfBirth = "dateOfBirth", AcDp = "acDp";
+    public static String UserId = "UserId";
+    public static String changeDate = "changeDate";
 
     public static boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            return false;
-        } catch (NullPointerException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             return false;
         }
-        // only got here if we didn't return false
         return true;
     }
 

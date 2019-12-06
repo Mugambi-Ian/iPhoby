@@ -62,6 +62,8 @@ public class HeartBeatManager {
     private boolean startSession = false;
     private ArrayList<Session> sessions;
     private String sessionLength;
+    private Handler sessionHandler;
+    private Runnable sessionRunnable;
 
 
     public void init(RecordHeartBeat record) {
@@ -101,11 +103,17 @@ public class HeartBeatManager {
         }
     }
 
+    private void endEndSListener() {
+        if (sessionHandler != null & sessionRunnable != null) {
+            sessionHandler.removeCallbacks(sessionRunnable);
+        }
+    }
+
     private void startEndSListener() {
         DataFetcher r = new DataFetcher();
         final boolean[] i = {false};
         final boolean[] d = {false};
-        final Handler handler = new Handler();
+        sessionHandler = new Handler();
         final int delay = 200;
         r.setResultListener(new DataFetcher.DataListener() {
             @Override
@@ -135,20 +143,21 @@ public class HeartBeatManager {
                 }
             }
         });
-        handler.postDelayed(new Runnable() {
+        sessionRunnable = new Runnable() {
             public void run() {
                 if (!i[0]) {
                     r.getData(Constants.EndS_Url + RuntimeData.dataBase.appUser.getPhoneNumber(), DataFetcher.RC_endSession);
                     i[0] = true;
                 }
                 if (!d[0]) {
-                    handler.postDelayed(this, delay);
+                    sessionHandler.postDelayed(this, delay);
                 } else {
                     endSession();
-                    handler.removeCallbacks(this);
+                    sessionHandler.removeCallbacks(this);
                 }
             }
-        }, delay);
+        };
+        sessionHandler.postDelayed(sessionRunnable, delay);
     }
 
     private void initData() {
@@ -281,6 +290,10 @@ public class HeartBeatManager {
                     } else {
                         vibrator.vibrate(200);
                     }
+                    if (startSession) {
+                        startSession();
+                        startSession = false;
+                    }
                 }
                 handler.postDelayed(this, delay);
             }
@@ -289,7 +302,7 @@ public class HeartBeatManager {
 
     private void startSession() {
         timer = recordHeartBeat.findViewById(R.id.ARHB_bpmTimer);
-        String text = "00:00";
+        String text = "0 Seconds";
         timer.setText(text);
         timerHandler = new Handler();
         timerRunnable = new Runnable() {
@@ -301,10 +314,10 @@ public class HeartBeatManager {
                     Minutes = Seconds / 60;
                     Seconds = Seconds % 60;
                     String text;
-                    if (Minutes <= 60) {
-                        text = String.format("%02d", Seconds) + " Seconds";
+                    if (Minutes < 1) {
+                        text = Seconds + " Seconds";
                     } else {
-                        text = String.format("%02d", Minutes) + " Min " + String.format("%02d", Seconds) + " Seconds";
+                        text = Minutes + " Min " + Seconds + " Seconds";
                     }
                     timer.setText(text);
                 }
@@ -389,10 +402,6 @@ public class HeartBeatManager {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 x.setBackground(drawables.btnOn);
             }
-            if (startSession) {
-                startSession();
-                startSession = false;
-            }
             y.setVisibility(View.INVISIBLE);
             x.startAnimation(animations.fadeIn);
         }
@@ -413,15 +422,18 @@ public class HeartBeatManager {
         recordHeartBeat.finish();
         recordHeartBeat.setHeartBeatManager(null);
         vibratorOn = false;
+        endEndSListener();
         if (!stopReading) {
             CameraSupport camera = heartRateOmeter.getCameraSupport();
-            camera.stopPreview();
-            camera.setPreviewCallback(null);
-            Camera cam = Camera.open();
-            Camera.Parameters p = cam.getParameters();
-            p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-            cam.stopPreview();
-            cam.release();
+            if (camera != null) {
+                camera.stopPreview();
+                camera.setPreviewCallback(null);
+                Camera cam = Camera.open();
+                Camera.Parameters p = cam.getParameters();
+                p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                cam.stopPreview();
+                cam.release();
+            }
         }
     }
 }

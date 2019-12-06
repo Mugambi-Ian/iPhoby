@@ -3,6 +3,7 @@ package com.iCropal.iPhobia.DataModel;
 
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
 import com.iCropal.iPhobia.Utility.Resources.Constants;
 import com.iCropal.iPhobia.Utility.Transmittors.RuntimeData;
 
@@ -20,12 +21,41 @@ public class DataBase {
     public static Record lastRecord;
     public ArrayList<Record> userRecords;
 
-    public static void addUserRecord(Record record) {
-        User x = RuntimeData.dataBase.appUser;
-        x.addUserRecord(record);
-        RuntimeData.referenceManger.setUserDatabase(x);
-        RuntimeData.dataBase.appUser = x;
+    public static AppUser getAppUser(String uId) {
+        DataSnapshot dataSnapshot = RuntimeData.pDetails.child(uId);
+        String phoneNumber = dataSnapshot.child("phoneNumber").getValue(String.class);
+        String userName = dataSnapshot.child("userName").getValue(String.class);
+        String dateOfBirth = dataSnapshot.child("dateOfBirth").getValue(String.class);
+        String tnDp = dataSnapshot.child("tnDp").getValue(String.class);
+        String acDp = dataSnapshot.child("acDp").getValue(String.class);
+        String userGender = dataSnapshot.child("userGender").getValue(String.class);
+        AppUser appUser = new AppUser(phoneNumber);
+        appUser.setUserId(dataSnapshot.getKey());
+        appUser.setUserName(userName);
+        appUser.setAcDp(acDp);
+        appUser.setDateOfBirth(dateOfBirth);
+        appUser.setTnDp(tnDp);
+        appUser.setUserGender(userGender);
+        return appUser;
     }
+
+    public static AppUser getAppUserID(DataSnapshot dataSnapshot) {
+        String phoneNumber = dataSnapshot.child("phoneNumber").getValue(String.class);
+        String userName = dataSnapshot.child("userName").getValue(String.class);
+        String dateOfBirth = dataSnapshot.child("dateOfBirth").getValue(String.class);
+        String tnDp = dataSnapshot.child("tnDp").getValue(String.class);
+        String acDp = dataSnapshot.child("acDp").getValue(String.class);
+        String userGender = dataSnapshot.child("userGender").getValue(String.class);
+        AppUser appUser = new AppUser(phoneNumber);
+        appUser.setUserId(dataSnapshot.getKey());
+        appUser.setUserName(userName);
+        appUser.setAcDp(acDp);
+        appUser.setDateOfBirth(dateOfBirth);
+        appUser.setTnDp(tnDp);
+        appUser.setUserGender(userGender);
+        return appUser;
+    }
+
 
     public int getPhobiaId(Phobia p) {
         if (appUser.getPhobias() != null) {
@@ -64,7 +94,7 @@ public class DataBase {
 
     public DataBase(ArrayList<Record> userRecords) {
         initPhobias();
-        appUser = new User("0715351482");
+        appUser = new User(RuntimeData.referenceManger.getPhoneNumber());
         if (userRecords.size() != 0) {
             lastRecord = userRecords.get(0);
         }

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -28,7 +27,8 @@ import com.iCropal.iPhobia.R;
 import com.iCropal.iPhobia.Ui.RecordsUi.RecordHeartBeat;
 import com.iCropal.iPhobia.Ui.Settings.Settings;
 import com.iCropal.iPhobia.Ui.Store.Store;
-import com.iCropal.iPhobia.Ui.User.UserRegistration;
+import com.iCropal.iPhobia.Ui.User.UserAuthorization;
+import com.iCropal.iPhobia.Ui.User.UserProfile;
 import com.iCropal.iPhobia.Utility.Adapters.PhobiaAdapter.PhobiaAnalysisAdapter;
 import com.iCropal.iPhobia.Utility.ApiManager.DataFetcher;
 import com.iCropal.iPhobia.Utility.Resources.Animations;
@@ -70,13 +70,19 @@ public class Home extends AppCompatActivity {
     }
 
     @Override
+    public void finish() {
+        super.finish();
+        RuntimeData.home = null;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         updateDatabase();
     }
 
     public void updateDatabase() {
-        fetcher.getData(Constants.API_Url + "0715351482", DataFetcher.RC_GetAllRecords);
+        fetcher.getData(Constants.API_Url + RuntimeData.referenceManger.getPhoneNumber(), DataFetcher.RC_GetAllRecords);
 
     }
 
@@ -88,6 +94,7 @@ public class Home extends AppCompatActivity {
         animations = new Animations(this);
         logoImageView = findViewById(R.id.AH_logo);
         phobiaOptions = findViewById(R.id.LHA_cardPager);
+        RuntimeData.cleanse();
         RuntimeData.home = this;
         preferenceManger = new PreferenceManger(Home.this);
         RuntimeData.referenceManger = preferenceManger;
@@ -112,9 +119,9 @@ public class Home extends AppCompatActivity {
                                 RuntimeData.dataBase = new DataBase(DataBase.getRecords(new JSONArray(data)));
                                 RuntimeData.dataBase.userRecords = DataBase.getRecords(new JSONArray(data));
                                 preferenceManger.setUserDatabase(RuntimeData.dataBase.appUser);
-                                       }
+                            }
                             if (r == DataFetcher.Phobia_Records) {
-                             //   Log.i(TAG, data);
+                                //   Log.i(TAG, data);
                             }
                             Home.this.initApp();
                         } catch (JSONException e) {
@@ -161,7 +168,7 @@ public class Home extends AppCompatActivity {
 
     private void initRegistration() {
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(this, UserRegistration.class));
+            startActivity(new Intent(this, UserAuthorization.class));
             finish();
         }, 300);
     }
@@ -273,6 +280,27 @@ public class Home extends AppCompatActivity {
                     500
             ));
             new Handler().postDelayed(() -> v.setEnabled(true), 600);
+        });
+        findViewById(R.id.AH_btnUserProfile).setOnClickListener(v -> {
+            v.setEnabled(false);
+            CircularReveal.presentActivity(new CircularReveal.Builder(
+                    Home.this,
+                    v,
+                    new Intent(Home.this, UserProfile.class),
+                    500
+            ));
+            new Handler().postDelayed(() -> v.setEnabled(true), 600);
+        });
+        findViewById(R.id.AH_btnSession).setOnClickListener(v -> {
+            v.setEnabled(false);
+            CircularReveal.presentActivity(new CircularReveal.Builder(
+                    Home.this,
+                    v,
+                    new Intent(Home.this, RecordHeartBeat.class),
+                    500
+            ));
+            new Handler().postDelayed(() -> v.setEnabled(true), 600);
+
         });
     }
 

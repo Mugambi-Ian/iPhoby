@@ -368,8 +368,8 @@
                                     android:clickable="true"
                                     android:focusable="true"
                                     android:fontFamily="@font/medium"
-                                    android:foreground="?selectableItemBackground"
-                                    android:gravity="center"
+                                android:foreground="?selectableItemBackground"
+                                android:gravity="center"
                                     android:text="User Policy"
                                     android:textColor="@android:color/holo_blue_bright"
                                     android:textSize="16dp" />

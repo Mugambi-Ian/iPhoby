@@ -161,7 +161,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:fontFamily="@font/light"
-                    android:text="00:00"
+                    android:text="0 Seconds"
                     android:textColor="@android:color/black"
                     android:textSize="40dp" />
 
@@ -579,7 +579,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:fontFamily="@font/light"
-                    android:text="00:00"
+                    android:text="0 Seconds"
                     android:textColor="@android:color/black"
                     android:textSize="40dp" />
 
