@@ -94,8 +94,10 @@ public class AccountInformation extends AppCompatActivity {
                 layoutTwo.startAnimation(animations.fadeIn);
             } else {
                 if (savePic) {
+                    loadSavingScreen();
                     saveUserPic();
                 } else {
+                    loadSavingScreen();
                     saveAccountInfo();
                 }
             }
@@ -107,8 +109,13 @@ public class AccountInformation extends AppCompatActivity {
         });
     }
 
+    private void loadSavingScreen() {
+        findViewById(R.id.AAI_mainLayout).setVisibility(View.GONE);
+        findViewById(R.id.AAI_layoutLoading).setVisibility(View.VISIBLE);
+        findViewById(R.id.AAI_nameLayout).startAnimation(animations.fadeIn);
+    }
+
     private void saveUserPic() {
-        savingInfo.show();
         disableViews();
         findViewById(R.id.AAI_btnSave).setEnabled(false);
         final StorageReference image = FirebaseStorage.getInstance().getReference().child(phoneNumber).child("acDp");
@@ -166,55 +173,57 @@ public class AccountInformation extends AppCompatActivity {
     }
 
     private void setupGender() {
-        View m = findViewById(R.id.AAI_gdM), f = findViewById(R.id.AAI_gdF), b = findViewById(R.id.AAI_gdB);
+        View mView = findViewById(R.id.AAI_gdMl), fView = findViewById(R.id.AAI_gdFl), bView = findViewById(R.id.AAI_gdBL);
+        TextView m = findViewById(R.id.AAI_gdM), f = findViewById(R.id.AAI_gdF), b = findViewById(R.id.AAI_gdB);
         View.OnClickListener listener = v -> {
             switch (v.getId()) {
-                case R.id.AAI_gdB:
+                case R.id.AAI_gdBL:
                     updateChanges(b);
                     break;
-                case R.id.AAI_gdM:
+                case R.id.AAI_gdMl:
                     updateChanges(m);
                     break;
-                case R.id.AAI_gdF:
+                case R.id.AAI_gdFl:
                     updateChanges(f);
                     break;
             }
         };
-        m.setOnClickListener(listener);
-        f.setOnClickListener(listener);
-        b.setOnClickListener(listener);
+        mView.setOnClickListener(listener);
+        fView.setOnClickListener(listener);
+        bView.setOnClickListener(listener);
     }
 
     private void updateChanges(View x) {
+        View mView = findViewById(R.id.AAI_gdMl), fView = findViewById(R.id.AAI_gdFl), bView = findViewById(R.id.AAI_gdBL);
         TextView v = (TextView) x;
         TextView m = findViewById(R.id.AAI_gdM), f = findViewById(R.id.AAI_gdF), b = findViewById(R.id.AAI_gdB);
         boolean isM = m == v, isF = f == v, isB = v == b;
         if (isM) {
-            m.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray));
+            mView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray));
             userGender = "Male";
             m.setTextColor(Color.WHITE);
             f.setTextColor(Color.BLACK);
-            f.setBackgroundColor(Color.WHITE);
+            fView.setBackgroundColor(Color.WHITE);
             b.setTextColor(Color.BLACK);
-            b.setBackgroundColor(Color.WHITE);
+            bView.setBackgroundColor(Color.WHITE);
         }
         if (isF) {
-            f.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray));
+            fView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray));
             userGender = "Female";
             f.setTextColor(Color.WHITE);
             m.setTextColor(Color.BLACK);
-            m.setBackgroundColor(Color.WHITE);
+            mView.setBackgroundColor(Color.WHITE);
             b.setTextColor(Color.BLACK);
-            b.setBackgroundColor(Color.WHITE);
+            bView.setBackgroundColor(Color.WHITE);
         }
         if (isB) {
-            b.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray));
+            bView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray));
             userGender = "Non-Binary";
             b.setTextColor(Color.WHITE);
             f.setTextColor(Color.BLACK);
-            f.setBackgroundColor(Color.WHITE);
+            fView.setBackgroundColor(Color.WHITE);
             m.setTextColor(Color.BLACK);
-            m.setBackgroundColor(Color.WHITE);
+            mView.setBackgroundColor(Color.WHITE);
         }
 
     }
@@ -241,12 +250,10 @@ public class AccountInformation extends AppCompatActivity {
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child(phoneNumber);
         appUser.setUserId(userReference.getKey());
         userReference.setValue(appUser).addOnCompleteListener(task -> {
-            if (savingInfo.isShown()) {
-                savingInfo.dismiss();
-                finish();
-                if (RuntimeData.home == null) {
-                    startActivity(new Intent(AccountInformation.this, Home.class));
-                }
+            RuntimeData.referenceManger.saveUserIds(appUser.getPhoneNumber());
+            finish();
+            if (RuntimeData.home == null) {
+                startActivity(new Intent(AccountInformation.this, Home.class));
             }
         });
     }
@@ -276,7 +283,7 @@ public class AccountInformation extends AppCompatActivity {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.isAnyPermissionPermanentlyDenied()) {
-                            Toast.makeText(AccountInformation.this, "Enable app permissions on the settings menu", Toast.LENGTH_LONG).show();
+                            //   Toast.makeText(AccountInformation.this, "Enable app permissions on the settings menu", Toast.LENGTH_LONG).show();
                         }
                     }
 

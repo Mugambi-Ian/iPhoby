@@ -32,6 +32,8 @@ public class Store extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private ViewPager storePager;
+    private StorePageAdapter pageAdapter;
+    private ArrayList<StoreItem> storeItems;
 
     @Override
     public void onBackPressed() {
@@ -59,9 +61,9 @@ public class Store extends AppCompatActivity {
         circularReveal.onActivityCreate(getIntent());
         drawables = new Drawables(this);
         storePager = findViewById(R.id.AIS_storePager);
-        ArrayList<StoreItem> storeItems = new ArrayList<>();
+        storeItems = new ArrayList<>();
         storeItems.add(new StoreItem("Trending", RuntimeData.dataBase.phobias));
-        StorePageAdapter pageAdapter = new StorePageAdapter(storeItems, this, storePager, this::openPhobia);
+        pageAdapter = new StorePageAdapter(storeItems, this, storePager, this::openPhobia);
         storePager.setAdapter(pageAdapter);
         View.OnClickListener ftListener = v -> {
             switch (v.getId()) {
@@ -105,6 +107,8 @@ public class Store extends AppCompatActivity {
         if (!anim) {
             storePager.setCurrentItem(0, false);
         }
+        pageAdapter = new StorePageAdapter(storeItems, this, storePager, this::openPhobia);
+        storePager.setAdapter(pageAdapter);
         txtTitle.setText("iPhoby Store");
         layoutFt.setVisibility(View.VISIBLE);
         phobiaView.setVisibility(View.GONE);

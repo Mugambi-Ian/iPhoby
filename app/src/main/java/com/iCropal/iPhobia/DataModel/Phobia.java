@@ -13,7 +13,7 @@ import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.PointValue;
 
 public class Phobia {
-    String phobiaId;
+    public String phobiaId;
     String phobiaTitle;
     String phobiaPng;
 

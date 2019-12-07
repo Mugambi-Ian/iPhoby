@@ -54,15 +54,12 @@ public class PhobiaAnalysisAdapter extends PagerAdapter {
         for (PhobiaProcessed x : r) {
             if (x.phobia.getPhobiaId().equals("Arachnophobia")) {
                 x.backgroundDrawable = ContextCompat.getDrawable(RuntimeData.home, R.drawable.spider);
-
             }
             if (x.phobia.getPhobiaId().equals("Hydrophobia")) {
                 x.backgroundDrawable = (ContextCompat.getDrawable(RuntimeData.home, R.drawable.water));
-
             }
             if (x.phobia.getPhobiaId().equals("Acrophobia")) {
                 x.backgroundDrawable = (ContextCompat.getDrawable(RuntimeData.home, R.drawable.height));
-
             }
             if (x.phobia.getPhobiaId().equals("Agoraphobia")) {
                 x.backgroundDrawable = (ContextCompat.getDrawable(RuntimeData.home, R.drawable.crowd));

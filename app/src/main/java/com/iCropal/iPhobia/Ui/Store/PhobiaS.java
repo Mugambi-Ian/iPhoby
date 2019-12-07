@@ -1,17 +1,13 @@
 package com.iCropal.iPhobia.Ui.Store;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -55,10 +51,18 @@ public class PhobiaS extends Fragment {
         itemX = getData(phobia);
         Glide.with(getContext()).load(itemX.drawable).into((ImageView) parentView.findViewById(R.id.FSB_phobiaDp));
         ((TextView) parentView.findViewById(R.id.FSB_phobiaName)).setText(phobia.getPhobiaTitle());
+        if (!itemX.available) {
+            ((TextView) parentView.findViewById(R.id.FSB_status)).setText("Coming Soon");
+            ((TextView) parentView.findViewById(R.id.FSB_status)).setTextColor(ContextCompat.getColor(getContext(), android.R.color.darker_gray));
+        }
         parentView.findViewById(R.id.FSB_btnShop).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(parentView, "You already own this item", Snackbar.LENGTH_LONG).show();
+                if (itemX.available) {
+                    Snackbar.make(parentView, "You already own this item", Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(parentView, "You'll be notified when this phobia is ready.", Snackbar.LENGTH_LONG).show();
+                }
             }
         });
         ((TextView) parentView.findViewById(R.id.FSB_txtDescription)).setText(itemX.description);
@@ -108,10 +112,51 @@ public class PhobiaS extends Fragment {
             x.drawables.add(x.drawable);
             x.description = "Agoraphobia is an anxiety disorder characterized by symptoms of anxiety in situations where the person perceives their environment to be unsafe with no easy way to escape. These situations can include open spaces, public transit, shopping centers, or simply being outside their home.Being in these situations may result in a panic attack.Agoraphobia is a condition where sufferers become anxious in unfamiliar environments or where they perceive that they have little control. Triggers for this anxiety may include wide-open spaces, crowds (social anxiety), or traveling (even short distances). Agoraphobia is often, but not always, compounded by a fear of social embarrassment, as the agoraphobic fears the onset of a panic attack and appearing distraught in public. Most of the time they avoid these areas and stay in the comfort of their safe haven, usually their home.";
         }
+        if (x.phobia.getPhobiaId().equals("Claustrophobia")) {
+            x.drawable = (ContextCompat.getDrawable(RuntimeData.home, R.drawable.cla));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.clb));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.clc));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.cfd));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.cfe));
+            x.drawables.add(x.drawable);
+            x.available = false;
+            x.description = "Claustrophobia is a form of anxiety disorder, in which an irrational fear of having no escape or being closed-in can lead to a panic attack.It is considered a specific phobia according to the Diagnostic and Statistical Manual 5 (DSM-5).Triggers may include being inside an elevator, a small room without any windows, or even being on an airplane.Some people have reported that wearing tight-necked clothing can provoke feelings of claustrophobia.";
+        }
+        if (x.phobia.getPhobiaId().equals("NyctoPhobia")) {
+            x.drawable = (ContextCompat.getDrawable(RuntimeData.home, R.drawable.nca));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.ncb));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.ncc));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.ncd));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.nde));
+            x.drawables.add(x.drawable);
+            x.available = false;
+            x.description = "Nyctophobia is an extreme fear of night or darkness that can cause intense symptoms of anxiety and depression. A fear becomes a phobia when it’s excessive, irrational, or impacts your day-to-day life.The symptoms you may experience with nyctophobia are much like those you would experience with other phobias. People with this phobia experience extreme fear that causes distress when they’re in the dark. Symptoms may interfere with daily activities, and school or work performance. They may even lead to health issues.";
+        }
+        if (x.phobia.getPhobiaId().equals("Ophidiophobia")) {
+            x.drawable = (ContextCompat.getDrawable(RuntimeData.home, R.drawable.sna));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.snb));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.snc));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.snd));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.sne));
+            x.drawables.add(x.drawable);
+            x.available = false;
+            x.description = "Ophidiophobia, or ophiophobia, is a particular type of specific phobia, the abnormal fear of snakes. It is sometimes called by a more general term, herpetophobia, fear of reptiles. The word comes from the Greek words \"ophis\" (ὄφις), snake, and \"phobia\" (φοβία) meaning fear.About a third of adult humans are ophidiophobic, making this the most common reported phobia.";
+        }
+        if (x.phobia.getPhobiaId().equals("Entomophobia")) {
+            x.drawable = (ContextCompat.getDrawable(RuntimeData.home, R.drawable.bge));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.bga));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.bgb));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.bgc));
+            x.drawables.add(ContextCompat.getDrawable(RuntimeData.home, R.drawable.bgd));
+            x.drawables.add(x.drawable);
+            x.available = false;
+            x.description = "Entomophobia is a specific phobia characterized by an excessive or unrealistic fear of one or more classes of insect, and classified as a phobia by the DSM-5.More specific cases included apiphobia (fear of bees), myrmecophobia (fear of ants), and lepidopterophobia (fear of moths and butterflies). One book claims 6% of all US inhabitants have this phobia.Lepidopterophobia can be developed in some ways. One of them by having a scary experience or if the person believes that the insect is dangerous. For example, if the person thinks a butterfly is venomous, they will do anything they can to avoid getting close to them.";
+        }
         return x;
     }
 
     private class PhobiaItemX {
+        private boolean available = true;
         private Phobia phobia;
         private Drawable drawable;
         private ArrayList<Drawable> drawables;

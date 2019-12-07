@@ -11,7 +11,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.iCropal.iPhobia.DataModel.AppUser;
@@ -49,7 +48,7 @@ public class UserAuthorization extends AppCompatActivity {
             }
         });
         findViewById(R.id.AUR_btnVerify).setOnClickListener(v -> {
-            if (phoneNumber == null || !phoneNumber.equals(getPhoneNumber(phoneNumberText.getText().toString()))) {
+           /* if (phoneNumber == null || !phoneNumber.equals(getPhoneNumber(phoneNumberText.getText().toString()))) {
                 if (phoneNumberText.getText().length() == 0) {
                     phoneNumberText.setError("Fill value.");
                 } else {
@@ -62,6 +61,15 @@ public class UserAuthorization extends AppCompatActivity {
             } else {
                 if (verificationCode.getText().length() != 0) {
                     verifyPhoneNumberWithCode(verificationId, verificationCode.getText().toString(), phoneNumber);
+                }
+            }
+        */
+            if (phoneNumber == null || !phoneNumber.equals(getPhoneNumber(phoneNumberText.getText().toString()))) {
+                if (phoneNumberText.getText().length() == 0) {
+                    phoneNumberText.setError("Fill value.");
+                } else {
+                    phoneNumber = phoneNumberText.getText().toString();
+                    initUser(phoneNumber);
                 }
             }
         });
@@ -133,7 +141,6 @@ public class UserAuthorization extends AppCompatActivity {
     }
 
     private void initUser(String phoneNumber) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (RuntimeData.pDetails.hasChild(phoneNumber)) {
             RuntimeData.referenceManger.saveUserIds(phoneNumber);
             startActivity(new Intent(this, Home.class));

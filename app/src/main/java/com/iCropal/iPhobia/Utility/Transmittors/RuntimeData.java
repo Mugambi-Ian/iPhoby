@@ -6,6 +6,9 @@ import com.iCropal.iPhobia.DataModel.AppUser;
 import com.iCropal.iPhobia.DataModel.DataBase;
 import com.iCropal.iPhobia.Ui.Home.Home;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RuntimeData {
     public static DataBase dataBase;
     public static Home home;
@@ -13,6 +16,7 @@ public class RuntimeData {
     public static int previousValue = -1;
     public static DataSnapshot pDetails;
     public static AppUser appUser;
+
 
     public static void cleanse() {
         dataBase = null;

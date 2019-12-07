@@ -149,6 +149,7 @@ public class DataBase {
         phobias.add(agoraphobia);
     }
 
+
     public static JSONObject createRecordObject(Record record) {
         JSONObject jsonObject = new JSONObject();
         try {

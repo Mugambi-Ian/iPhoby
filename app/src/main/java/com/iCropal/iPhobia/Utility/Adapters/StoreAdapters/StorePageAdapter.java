@@ -2,13 +2,12 @@ package com.iCropal.iPhobia.Utility.Adapters.StoreAdapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,18 +15,22 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
 import com.iCropal.iPhobia.DataModel.Phobia;
 import com.iCropal.iPhobia.DataModel.StoreItem;
 import com.iCropal.iPhobia.R;
+import com.iCropal.iPhobia.Utility.Adapters.PhobiaAdapter.PhobiaCardAdapter;
+import com.iCropal.iPhobia.Utility.Adapters.PhobiaAdapter.PhobiaSaleAdapter;
+import com.iCropal.iPhobia.Utility.Resources.Animations;
+import com.iCropal.iPhobia.Utility.Resources.Constants;
 import com.iCropal.iPhobia.Utility.Transmittors.RuntimeData;
+import com.iCropal.iPhobia.Utility.Widget.NeneGrid;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class StorePageAdapter extends PagerAdapter {
-
     private final ViewPager pager;
-    private final StoreAdapterInterface adapterInterface;
+    private StoreAdapterInterface adapterInterface;
     private ArrayList<StoreItemX> mData;
     private LayoutInflater layoutInflater;
     private Context context;
@@ -41,7 +44,7 @@ public class StorePageAdapter extends PagerAdapter {
         }
     }
 
-    private static class StoreItemX {
+    private class StoreItemX {
         private ArrayList<PhobiaItemX> phobiaItemX;
         private String itemTitle;
 
@@ -58,15 +61,46 @@ public class StorePageAdapter extends PagerAdapter {
         return "";
     }
 
+    public ArrayList<Phobia> getExtraPhobias() {
+        ArrayList<Phobia> phobias = new ArrayList<>();
+        Phobia arachnoPhobia = new Phobia("Arachnophobia");
+        arachnoPhobia.setPhobiaTitle(Constants.titleCaseConversion(arachnoPhobia.phobiaId));
+        Phobia aquaPhobia = new Phobia("Hydrophobia");
+        aquaPhobia.setPhobiaTitle(Constants.titleCaseConversion(aquaPhobia.phobiaId));
+        Phobia acroPhobia = new Phobia("Acrophobia");
+        acroPhobia.setPhobiaTitle(Constants.titleCaseConversion(acroPhobia.phobiaId));
+        Phobia agoraphobia = new Phobia("Agoraphobia");
+        agoraphobia.setPhobiaTitle(Constants.titleCaseConversion(agoraphobia.phobiaId));
+        Phobia nyctophobia = new Phobia("NyctoPhobia");
+        nyctophobia.setPhobiaTitle(Constants.titleCaseConversion(nyctophobia.phobiaId));
+        Phobia coulrophobia = new Phobia("Claustrophobia");
+        coulrophobia.setPhobiaTitle(Constants.titleCaseConversion(coulrophobia.phobiaId));
+        Phobia ophidiophobia = new Phobia("Ophidiophobia");
+        ophidiophobia.setPhobiaTitle(Constants.titleCaseConversion(ophidiophobia.phobiaId));
+        Phobia trypophobia = new Phobia("Entomophobia");
+        trypophobia.setPhobiaTitle(Constants.titleCaseConversion(trypophobia.phobiaId));
+
+        phobias.add(nyctophobia);
+        phobias.add(trypophobia);
+        phobias.add(ophidiophobia);
+        phobias.add(coulrophobia);
+        phobias.add(arachnoPhobia);
+        phobias.add(aquaPhobia);
+        phobias.add(acroPhobia);
+        phobias.add(agoraphobia);
+
+        return phobias;
+    }
+
     public StorePageAdapter(ArrayList<StoreItem> mData, Context context, ViewPager pager, StoreAdapterInterface adapterInterface) {
         this.pager = pager;
         this.adapterInterface = adapterInterface;
         ArrayList<StoreItemX> storeItemXES = new ArrayList<>();
-        storeItemXES.add(new StoreItemX(null, "Welcome"));
         for (StoreItem x : mData) {
             storeItemXES.add(new StoreItemX(getData(x.itemPhobias), x.itemTitle));
         }
         this.mData = storeItemXES;
+        Collections.shuffle(this.mData);
         this.context = context;
     }
 
@@ -117,7 +151,10 @@ public class StorePageAdapter extends PagerAdapter {
         if (!w) {
             view = layoutInflater.inflate(R.layout.page_item_store, container, false);
             ListView listView = view.findViewById(R.id.PIS_listView);
-            PhobiaAdapter phobiaAdapter = new PhobiaAdapter(context, R.layout.page_item_store, x.phobiaItemX);
+            ArrayList<Integer> integers = new ArrayList<>();
+            integers.add(0);
+            integers.add(1);
+            PhobiaAdapter phobiaAdapter = new PhobiaAdapter(context, R.layout.page_item_store, integers);
             listView.setAdapter(phobiaAdapter);
             container.addView(view, 0);
         } else {
@@ -130,9 +167,17 @@ public class StorePageAdapter extends PagerAdapter {
         return view;
     }
 
-    private class PhobiaAdapter extends ArrayAdapter<PhobiaItemX> {
+    private ArrayList<Phobia> getPhobiaXX() {
+        ArrayList<Phobia> phobias = new ArrayList<>();
+        phobias.add(null);
+        phobias.addAll(RuntimeData.dataBase.phobias);
+        return phobias;
+    }
 
-        PhobiaAdapter(@NonNull Context context, int resource, @NonNull ArrayList<PhobiaItemX> objects) {
+
+    private class PhobiaAdapter extends ArrayAdapter<Integer> {
+
+        PhobiaAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Integer> objects) {
             super(context, resource, objects);
         }
 
@@ -140,21 +185,53 @@ public class StorePageAdapter extends PagerAdapter {
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             View parentView = convertView;
-            if (parentView == null) {
-                parentView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_store, parent, false);
+            int x = getItem(position);
+            if (x == 0) {
+                if (parentView == null) {
+                    parentView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_store_dash, parent, false);
+                }
+                ViewPager viewPager = parentView.findViewById(R.id.LISD_pager);
+                PhobiaSaleAdapter pageAdapter = new PhobiaSaleAdapter(getExtraPhobias(), context, new PhobiaSaleAdapter.AdapterInterface() {
+                    @Override
+                    public void onItemClick(Phobia phobia) {
+                        adapterInterface.openPhobia(phobia);
+                    }
+                });
+                viewPager.setAdapter(pageAdapter);
+                Handler handler = new Handler();
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        int c = viewPager.getCurrentItem();
+                        if (c + 1 > getExtraPhobias().size() - 1) {
+                            viewPager.setCurrentItem(0,false);
+                            viewPager.startAnimation(new Animations(getContext()).fadeIn);
+
+                        } else {
+                            viewPager.setCurrentItem(c + 1);
+                        }
+                        handler.postDelayed(this, 2500);
+                    }
+                };
+                handler.postDelayed(runnable, 2500);
+                return parentView;
+            } else {
+                if (parentView == null) {
+                    parentView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_store_cards, parent, false);
+                }
+                NeneGrid gridView = parentView.findViewById(R.id.LISC_gridView);
+                PhobiaCardAdapter phobiaCardAdapter = new PhobiaCardAdapter(getContext(), phobia -> adapterInterface.openPhobia(phobia), getExtraPhobias());
+                gridView.setAdapter(phobiaCardAdapter);
+                gridView.setExpanded(true);
+                return parentView;
             }
-            PhobiaItemX x = getItem(position);
-            ((TextView) parentView.findViewById(R.id.LIS_phobiaName)).setText(x.phobia.getPhobiaTitle());
-            Glide.with(getContext()).load(x.drawable).into((ImageView) parentView.findViewById(R.id.LIS_phobiaDp));
-            parentView.findViewById(R.id.LIS_btnPhobia).setOnClickListener(v -> {
-                adapterInterface.openPhobia(x.phobia);
-            });
-            return parentView;
+
         }
     }
 
     public interface StoreAdapterInterface {
         void openPhobia(Phobia phobia);
+
     }
 
     @Override

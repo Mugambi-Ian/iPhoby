@@ -2,11 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/AS_rootView"
-    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:fitsSystemWindows="true"
     tools:context=".Ui.Settings.Settings">
 
     <ImageView
@@ -94,24 +94,26 @@
                         android:textSize="18dp" />
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
+                        android:layout_width="200dp"
                         android:layout_height="50dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@android:color/white"
-                        app:cardCornerRadius="20dp"
+                        android:visibility="visible"
+                        app:cardCornerRadius="5dp"
                         app:cardElevation="2dp">
 
                         <TextView
+                            android:background="#673AB7"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:fontFamily="@font/regular"
+                            android:fontFamily="@font/bold"
                             android:gravity="center"
-                            android:text="Sync Now"
-                            android:textColor="@android:color/black"
-                            android:textSize="20dp" />
+                            android:text="Synced"
+                            android:textColor="@android:color/white"
+                            android:textSize="16dp" />
                     </androidx.cardview.widget.CardView>
 
                 </LinearLayout>
@@ -146,24 +148,25 @@
                         android:textSize="18dp" />
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
+                        android:layout_width="200dp"
                         android:layout_height="50dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@android:color/white"
-                        app:cardCornerRadius="20dp"
+                        app:cardCornerRadius="5dp"
                         app:cardElevation="2dp">
 
                         <TextView
+                            android:background="#42A5F5"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:fontFamily="@font/regular"
+                            android:fontFamily="@font/bold"
                             android:gravity="center"
-                            android:text="Sync Now"
-                            android:textColor="@android:color/black"
-                            android:textSize="20dp" />
+                            android:text="Upgrade requried"
+                            android:textColor="@android:color/white"
+                            android:textSize="16dp" />
                     </androidx.cardview.widget.CardView>
 
                 </LinearLayout>

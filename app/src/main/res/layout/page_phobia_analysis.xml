@@ -126,9 +126,9 @@
                                     android:layout_gravity="center_horizontal"
                                     android:fontFamily="@font/bold"
                                     android:gravity="center"
-                                    android:text="AVG"
+                                    android:text="Conf"
                                     android:textColor="@android:color/white"
-                                    android:textSize="14dp" />
+                                    android:textSize="18dp" />
 
                                 <TextView
                                     android:id="@+id/PPA_avg"

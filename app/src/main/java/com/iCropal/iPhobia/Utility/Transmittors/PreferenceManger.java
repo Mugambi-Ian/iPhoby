@@ -17,13 +17,16 @@ import com.iCropal.iPhobia.DataModel.User;
 import com.iCropal.iPhobia.Utility.Resources.Constants;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 public class PreferenceManger {
+    public boolean isDL = false;
     private SharedPreferences databaseReference;
     private SharedPreferences userIdPreferences;
+    private ArrayList<DatabaseLoaded> databaseLoaded;
 
     public void saveUserDetails(AppUser appUser) {
         userIdPreferences.edit().putString(Constants.UserName, appUser.getUserName()).apply();
@@ -43,6 +46,13 @@ public class PreferenceManger {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     RuntimeData.pDetails = dataSnapshot;
+                    isDL = true;
+                    if (databaseLoaded != null) {
+                        for (DatabaseLoaded loaded : databaseLoaded) {
+                            loaded.ondDatabaseLoaded();
+                        }
+                    }
+
                 }
 
                 @Override
@@ -57,6 +67,12 @@ public class PreferenceManger {
                     RuntimeData.pDetails = dataSnapshot;
                     RuntimeData.appUser = DataBase.getAppUserID(dataSnapshot);
                     saveUserDetails(DataBase.getAppUserID(dataSnapshot));
+                    if (databaseLoaded != null) {
+                        for (DatabaseLoaded loaded : databaseLoaded) {
+                            loaded.ondDatabaseLoaded();
+                        }
+                    }
+                    isDL = true;
                 }
 
                 @Override
@@ -102,5 +118,16 @@ public class PreferenceManger {
         userIdPreferences.edit().putString(Constants.DateOfBirth, null).apply();
         userIdPreferences.edit().putString(Constants.UserId, null).apply();
         databaseReference.edit().putString(Constants.User_Database, null).apply();
+    }
+
+    public interface DatabaseLoaded {
+        void ondDatabaseLoaded();
+    }
+
+    public void onDataBaseLoaded(DatabaseLoaded databaseLoaded) {
+        if (this.databaseLoaded == null) {
+            this.databaseLoaded = new ArrayList<>();
+        }
+        this.databaseLoaded.add(databaseLoaded);
     }
 }

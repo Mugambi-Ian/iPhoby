@@ -8,133 +8,292 @@
     android:orientation="vertical"
     tools:context=".Ui.User.AccountInformation">
 
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:orientation="vertical">
-
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/AAI_layoutOne"
+            android:id="@+id/AAI_mainLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="5dp"
-                android:fontFamily="@font/semibold"
-                android:text="Account Information"
-                android:textColor="@android:color/black"
-                android:textSize="22dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
-                android:fontFamily="@font/light"
-                android:text="Please fill out your personal details"
-                android:textSize="18dp" />
 
             <LinearLayout
+                android:id="@+id/AAI_layoutOne"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:layout_gravity="center"
-                android:gravity="center"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="160dp"
-                    android:layout_height="160dp"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/semibold"
+                    android:text="Account Information"
+                    android:textColor="@android:color/black"
+                    android:textSize="22dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="20dp"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="2dp">
+                    android:fontFamily="@font/light"
+                    android:text="Please fill out your personal details"
+                    android:textSize="18dp" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/AAI_userDp"
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="160dp"
+                        android:layout_height="160dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="20dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="2dp">
+
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="15dp"
-                            android:scaleType="centerCrop" />
-
-                        <LinearLayout
-                            android:id="@+id/AAI_btnAddPic"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentBottom="true"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/cir_purple"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="@drawable/clk_cir">
+                            android:layout_height="match_parent">
 
                             <ImageView
+                                android:id="@+id/AAI_userDp"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_margin="5dp"
-                                android:src="@drawable/camera" />
-                        </LinearLayout>
-                    </RelativeLayout>
+                                android:layout_margin="15dp"
+                                android:scaleType="centerCrop" />
 
-                </androidx.cardview.widget.CardView>
+                            <LinearLayout
+                                android:id="@+id/AAI_btnAddPic"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentBottom="true"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/cir_purple"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="@drawable/clk_cir">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/AAI_nameLayout"
-                    android:layout_width="350dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp">
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/camera" />
+                            </LinearLayout>
+                        </RelativeLayout>
 
-                    <EditText
-                        android:id="@+id/AAI_userName"
-                        android:layout_width="match_parent"
+                    </androidx.cardview.widget.CardView>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/AAI_nameLayout"
+                        android:layout_width="350dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:fontFamily="@font/light"
-                        android:hint="Your Name"
-                        android:imeOptions="actionDone"
-                        android:inputType="text"
-                        android:textColor="@android:color/black"
-                        android:textSize="18dp" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp">
+
+                        <EditText
+                            android:id="@+id/AAI_userName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:fontFamily="@font/light"
+                            android:hint="Your Name"
+                            android:imeOptions="actionDone"
+                            android:inputType="text"
+                            android:textColor="@android:color/black"
+                            android:textSize="18dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/AAI_changeDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:orientation="vertical"
-            android:visibility="gone">
 
             <LinearLayout
+                android:id="@+id/AAI_changeDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
+                android:layout_marginTop="50dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/holo_blue_light" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/semibold"
+                        android:gravity="center"
+                        android:text="Select Your Gender"
+                        android:textColor="@android:color/black"
+                        android:textSize="20dp" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/holo_blue_light" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1.2"
+                            android:background="@android:color/white"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="2dp">
+
+                            <LinearLayout
+                                android:id="@+id/AAI_gdMl"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?selectableItemBackground"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@drawable/male" />
+
+                                <TextView
+                                    android:id="@+id/AAI_gdM"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:fontFamily="@font/regular"
+                                    android:foreground="?selectableItemBackground"
+                                    android:gravity="center"
+                                    android:text="Male"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="16dp" />
+                            </LinearLayout>
+
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1.2"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="2dp">
+
+                            <LinearLayout
+                                android:id="@+id/AAI_gdFl"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?selectableItemBackground"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@drawable/female" />
+
+                                <TextView
+                                    android:id="@+id/AAI_gdF"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:fontFamily="@font/regular"
+                                    android:foreground="?selectableItemBackground"
+                                    android:gravity="center"
+                                    android:text="Female"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="16dp" />
+                            </LinearLayout>
+
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1.2"
+
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="2dp">
+
+                            <LinearLayout
+                                android:id="@+id/AAI_gdBL"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?selectableItemBackground"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@drawable/transgender" />
+
+                                <TextView
+                                    android:id="@+id/AAI_gdB"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/regular"
+                                    android:gravity="center"
+                                    android:text="Non-Binary"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="16dp" />
+                            </LinearLayout>
+
+
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+
+                </LinearLayout>
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@android:color/darker_gray" />
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@android:color/holo_blue_light" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -143,162 +302,113 @@
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/semibold"
                     android:gravity="center"
-                    android:text="Select Your Gender"
+                    android:text="Date of Birth"
                     android:textColor="@android:color/black"
                     android:textSize="20dp" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@android:color/darker_gray" />
 
-                <androidx.cardview.widget.CardView
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@android:color/holo_blue_light" />
+
+                <DatePicker
+                    android:id="@+id/AAI_datePicker"
+                    style="@style/DatePicker"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1.2"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="2dp">
+                    android:layout_height="180dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:calendarViewShown="false"
+                    android:datePickerMode="spinner" />
 
-                    <TextView
-                        android:id="@+id/AAI_gdM"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/white"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:fontFamily="@font/regular"
-                        android:foreground="?selectableItemBackground"
-                        android:gravity="center"
-                        android:text="Male"
-                        android:textColor="@android:color/black"
-                        android:textSize="16dp" />
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1.2"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="2dp">
-
-                    <TextView
-                        android:id="@+id/AAI_gdF"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:fontFamily="@font/regular"
-                        android:foreground="?selectableItemBackground"
-                        android:gravity="center"
-                        android:text="Female"
-                        android:textColor="@android:color/black"
-                        android:textSize="16dp" />
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1.2"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="2dp">
-
-                    <TextView
-                        android:id="@+id/AAI_gdB"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:fontFamily="@font/regular"
-                        android:foreground="?selectableItemBackground"
-                        android:gravity="center"
-                        android:text="Non Binary"
-                        android:textColor="@android:color/black"
-                        android:textSize="16dp" />
-                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 
-            <FrameLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="63dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal">
 
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:background="@android:color/darker_gray" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/semibold"
-                android:gravity="center"
-                android:text="Date of Birth"
-                android:textColor="@android:color/black"
-                android:textSize="20dp" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:background="@android:color/darker_gray" />
-
-            <DatePicker
-                android:id="@+id/AAI_datePicker"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:calendarViewShown="false"
-                android:datePickerMode="spinner" />
+                    <TextView
+                        android:id="@+id/AAI_btnSave"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#7E57C2"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/semibold"
+                        android:foreground="?selectableItemBackground"
+                        android:gravity="center"
+                        android:text="Save"
+                        android:textColor="@android:color/white"
+                        android:textSize="16dp" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
 
         </LinearLayout>
-
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="63dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="horizontal">
+            android:id="@+id/AAI_layoutLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <FrameLayout
-                android:layout_width="match_parent"
+            <com.agrawalsuneet.squareloaderspack.loaders.WaveLoader
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_marginBottom="10dp"
+                app:wave_animDuration="300"
+                app:wave_delayDuration="100"
+                app:wave_interpolator="@android:anim/linear_interpolator"
+                app:wave_isSingleColor="true"
+                app:wave_noOfDots="15"
+                app:wave_rectColor="#A142A5F5"
+                app:wave_rectDistance="5dp"
+                app:wave_rectHeight="25dp"
+                app:wave_rectWidth="5dp" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@id/Logo"
+                android:layout_toRightOf="@id/Logo"
+                android:fontFamily="@font/regular"
+                android:gravity="center_vertical"
+                android:text="Updating Info"
+                android:textColor="@android:color/black"
+                android:textSize="22dp" />
 
-                <TextView
-                    android:id="@+id/AAI_btnSave"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#7E57C2"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:fontFamily="@font/semibold"
-                    android:foreground="?selectableItemBackground"
-                    android:gravity="center"
-                    android:text="Save"
-                    android:textColor="@android:color/white"
-                    android:textSize="16dp" />
-            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
+    </RelativeLayout>
 
-
-    </LinearLayout>
 
 </com.xw.repo.widget.BounceScrollView>

@@ -168,8 +168,19 @@ public class Home extends AppCompatActivity {
 
     private void initRegistration() {
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(this, UserAuthorization.class));
-            finish();
+            if (preferenceManger.isDL) {
+                startActivity(new Intent(Home.this, UserAuthorization.class));
+                finish();
+            } else {
+                preferenceManger.onDataBaseLoaded(new PreferenceManger.DatabaseLoaded() {
+                    @Override
+                    public void ondDatabaseLoaded() {
+                        startActivity(new Intent(Home.this, UserAuthorization.class));
+                        finish();
+                    }
+                });
+            }
+
         }, 300);
     }
 
