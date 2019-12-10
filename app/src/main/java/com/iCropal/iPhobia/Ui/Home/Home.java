@@ -339,17 +339,17 @@ public class Home extends AppCompatActivity {
         ((TextView) findViewById(R.id.LHA_bpmMost)).setText(RuntimeData.dataBase.appUser.getMostSession().getAverageBpm());
         ((TextView) findViewById(R.id.LHA_bpmLAvg)).setText(RuntimeData.dataBase.appUser.getLowestAvg().getAverageBpm());
         ((TextView) findViewById(R.id.LHA_bpmHAvg)).setText(RuntimeData.dataBase.appUser.getHighestAvg().getAverageBpm());
-        ((TextView) findViewById(R.id.LHA_bpmRecent)).setText(getLastPhobia().getAverageBpm());
+        ((TextView) findViewById(R.id.LHA_bpmRecent)).setText(RuntimeData.dataBase.appUser.getLastSession().getAverageBpm());
 
         ((TextView) findViewById(R.id.LHA_phobiaMost)).setText(RuntimeData.dataBase.appUser.getMostSession().getPhobiaTitle());
         ((TextView) findViewById(R.id.LHA_phobiaLAvg)).setText(RuntimeData.dataBase.appUser.getLowestAvg().getPhobiaTitle());
         ((TextView) findViewById(R.id.LHA_phobiaHAvg)).setText(RuntimeData.dataBase.appUser.getHighestAvg().getPhobiaTitle());
-        ((TextView) findViewById(R.id.LHA_phobiaRecent)).setText(getLastPhobia().getPhobiaTitle());
+        ((TextView) findViewById(R.id.LHA_phobiaRecent)).setText(RuntimeData.dataBase.appUser.getLastSession().getPhobiaTitle());
 
         chartM.setLines(RuntimeData.dataBase.appUser.getMostSession().getLines(null));
         chartL.setLines(RuntimeData.dataBase.appUser.getLowestAvg().getLines("#26C6DA"));
         chartH.setLines(RuntimeData.dataBase.appUser.getHighestAvg().getLines("#B71C1C"));
-        chartR.setLines(getLastPhobia().getLines("#66BB6A"));
+        chartR.setLines(RuntimeData.dataBase.appUser.getLastSession().getLines("#66BB6A"));
 
         ((LineChartView) findViewById(R.id.LHA_chartMost)).setLineChartData(chartM);
         ((LineChartView) findViewById(R.id.LHA_chartHAvg)).setLineChartData(chartH);
@@ -359,7 +359,7 @@ public class Home extends AppCompatActivity {
         findViewById(R.id.LHA_btnHAvg).setTag(RuntimeData.dataBase.appUser.getHighestAvg().getPhobiaId());
         findViewById(R.id.LHA_btnLAvg).setTag(RuntimeData.dataBase.appUser.getLowestAvg().getPhobiaId());
         findViewById(R.id.LHA_btnMost).setTag(RuntimeData.dataBase.appUser.getMostSession().getPhobiaId());
-        findViewById(R.id.LHA_btnRecent).setTag(getLastPhobia().getPhobiaId());
+        findViewById(R.id.LHA_btnRecent).setTag(RuntimeData.dataBase.appUser.getLastSession().getPhobiaId());
 
         View.OnClickListener listener = v ->
                 openPhobiaDetails(DataBase.getPhobia(String.valueOf(v.getTag()), 1), -1);
@@ -372,12 +372,9 @@ public class Home extends AppCompatActivity {
         if (RuntimeData.dataBase.appUser.getMostSession().getRecords().size() >= 3) {
             findViewById(R.id.LHA_btnMost).setOnClickListener(listener);
         }
-        if (getLastPhobia().getRecords().size() >= 3) {
+        if (RuntimeData.dataBase.appUser.getLastSession().getRecords().size() >= 3) {
             findViewById(R.id.LHA_btnRecent).setOnClickListener(listener);
         }
     }
 
-    private Phobia getLastPhobia() {
-        return DataBase.getPhobia(DataBase.lastRecord.getPhobiaId(), 1);
-    }
 }

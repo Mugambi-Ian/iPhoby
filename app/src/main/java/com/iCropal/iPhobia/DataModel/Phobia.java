@@ -22,6 +22,15 @@ public class Phobia {
             records = new ArrayList<>();
         }
         records.add(record);
+        sortRecords();
+    }
+
+    private void sortRecords() {
+        Collections.sort(records, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+    }
+
+    public Record getLastSession() {
+        return records.get(records.size() - 1);
     }
 
     public List getYAxisData() {
@@ -80,6 +89,7 @@ public class Phobia {
 
     public void setRecords(ArrayList<Record> records) {
         this.records = records;
+        sortRecords();
     }
 
     public Record getHighestRecord() {
@@ -167,12 +177,15 @@ public class Phobia {
             int t = 0;
             for (Record r : records) {
                 if (isInteger(r.getRecordBmp())) {
-                    x = x + (Integer.valueOf(r.getRecordBmp()));
-                    t++;
+                    if (Integer.valueOf(r.getRecordBmp()) > 40 && Integer.valueOf(r.getRecordBmp()) < 140) {
+                        x = x + (Integer.valueOf(r.getRecordBmp()));
+                        t++;
+                    }
                 }
             }
             x = x / t;
         }
         return "" + x;
     }
+
 }

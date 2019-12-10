@@ -1,5 +1,10 @@
 package com.iCropal.iPhobia.DataModel;
 
+import com.iCropal.iPhobia.Utility.Resources.Time;
+
+import java.text.ParseException;
+import java.util.Date;
+
 public class Record {
     String recordId;
     private String recordBmp;
@@ -107,5 +112,14 @@ public class Record {
         if (e_time != null) {
             recordTime = e_time.toString();
         }
+    }
+
+    public Date getDate() {
+        try {
+            return Time.getDate(recordDate, recordTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

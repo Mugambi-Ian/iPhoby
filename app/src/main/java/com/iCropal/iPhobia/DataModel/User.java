@@ -3,6 +3,8 @@ package com.iCropal.iPhobia.DataModel;
 import com.iCropal.iPhobia.Utility.Transmittors.RuntimeData;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class User {
     private String phoneNumber;
@@ -54,6 +56,22 @@ public class User {
             return phobias.get(id);
         }
         return null;
+    }
+
+    public Phobia getLastSession() {
+        ArrayList<Phobia> phobias = this.phobias;
+        Collections.sort(phobias, new Comparator<Phobia>() {
+            @Override
+            public int compare(Phobia o1, Phobia o2) {
+                return o2.getLastSession().getDate().compareTo(o1.getLastSession().getDate());
+            }
+        });
+        if (phobias.get(0) != null) {
+            return phobias.get(0);
+        } else {
+            return null;
+        }
+
     }
 
     public User(String phoneNumber) {

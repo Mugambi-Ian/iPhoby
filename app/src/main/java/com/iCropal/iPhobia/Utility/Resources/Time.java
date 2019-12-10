@@ -31,7 +31,7 @@ public class Time {
         try {
             Calendar c = Calendar.getInstance();
             c.setTime(dateFormat.parse(date));
-            return daysList[c.get(Calendar.DAY_OF_WEEK) - 1] + ", " + time;
+            return daysList[c.get(Calendar.DAY_OF_WEEK) -2] + ", " + time;
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -79,5 +79,13 @@ public class Time {
         c.set(YEAR, datePicker.getYear());
         c.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
         return longFormat.format(c.getTime());
+    }
+
+    public static Date getDate(String recordDate, String recordTime) throws ParseException {
+        Calendar calendar = Calendar.getInstance();
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm aa");
+        String date = recordDate + " " + recordTime;
+        calendar.setTime(format.parse(date));
+        return calendar.getTime();
     }
 }
