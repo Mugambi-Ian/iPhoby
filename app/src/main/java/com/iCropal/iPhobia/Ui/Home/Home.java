@@ -3,8 +3,10 @@ package com.iCropal.iPhobia.Ui.Home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -37,6 +39,7 @@ import com.iCropal.iPhobia.Utility.Transmittors.PreferenceManger;
 import com.iCropal.iPhobia.Utility.Transmittors.RuntimeData;
 import com.tombayley.activitycircularreveal.CircularReveal;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -54,6 +57,7 @@ public class Home extends AppCompatActivity {
     private ViewPager phobiaOptions;
     private View logoImageView;
     private PreferenceManger preferenceManger;
+    private boolean connectionEstablished = false;
 
     @Override
     public void onBackPressed() {
@@ -90,6 +94,9 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         fetcher = new DataFetcher();
         animations = new Animations(this);
         logoImageView = findViewById(R.id.AH_logo);
@@ -102,6 +109,9 @@ public class Home extends AppCompatActivity {
         waveLoader.setInterpolator(new LinearInterpolator());
         waveLoader.setAnimDuration(1000);
         waveLoader.setDelayDuration(100);
+        if (!isOnline()) {
+            startHandler();
+        }
         if (preferenceManger.getPhoneNumber() == null) {
             startRegistration();
         } else {
@@ -110,42 +120,72 @@ public class Home extends AppCompatActivity {
                     updateDatabase();
                 }
             });
+            if (!isOnline()) {
+                startHandler();
+            }
             if (isOnline()) {
-                fetcher.setResultListener(new DataFetcher.DataListener() {
-                    @Override
-                    public void onSuccess(String data, int r) {
-                        try {
-                            if (r == DataFetcher.RC_GetAllRecords) {
-                                RuntimeData.dataBase = new DataBase(DataBase.getRecords(new JSONArray(data)));
-                                RuntimeData.dataBase.userRecords = DataBase.getRecords(new JSONArray(data));
-                                preferenceManger.setUserDatabase(RuntimeData.dataBase.appUser);
-                            }
-                            if (r == DataFetcher.Phobia_Records) {
-                                //   Log.i(TAG, data);
-                            }
-                            Home.this.initApp();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int r) {
-                        String userDataBase = preferenceManger.getUserDatabase();
-                        Log.i(TAG, "onApiF: " + userDataBase);
-                        //RuntimeData.dataBase =new DataBase(DataBase.getRecords(DataBase.createJsonArray(userDataBase)));
-                        //initApp();
-                    }
-                });
-                fetcher.getData(Constants.API_Url + preferenceManger.getPhoneNumber(), DataFetcher.RC_GetAllRecords);
-                fetcher.getData(Constants.Phobia_Url, DataFetcher.Phobia_Records);
-
+                initializeApp();
             } else {
                 String userDataBase = preferenceManger.getUserDatabase();
                 Log.i(TAG, "onIntF: " + userDataBase);
             }
         }
 
+    }
+
+    private void initializeApp() {
+        fetcher.setResultListener(new DataFetcher.DataListener() {
+            @Override
+            public void onSuccess(String data, int r) {
+                try {
+                    connectionEstablished = true;
+                    if (r == DataFetcher.RC_GetAllRecords) {
+                        RuntimeData.dataBase = new DataBase(DataBase.getRecords(new JSONArray(data)));
+                        RuntimeData.dataBase.userRecords = DataBase.getRecords(new JSONArray(data));
+                        preferenceManger.setUserDatabase(RuntimeData.dataBase.appUser);
+                    }
+                    if (r == DataFetcher.Phobia_Records) {
+                        //   Log.i(TAG, data);
+                    }
+                    new Handler().postDelayed(() -> {
+                        if (preferenceManger.isDL) {
+                            Home.this.initApp();
+                        }
+
+                    }, 300);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int r) {
+                String userDataBase = preferenceManger.getUserDatabase();
+                Log.i(TAG, "onApiF: " + userDataBase);
+                //RuntimeData.dataBase =new DataBase(DataBase.getRecords(DataBase.createJsonArray(userDataBase)));
+                //initApp();
+            }
+        });
+        fetcher.getData(Constants.API_Url + preferenceManger.getPhoneNumber(), DataFetcher.RC_GetAllRecords);
+        fetcher.getData(Constants.Phobia_Url, DataFetcher.Phobia_Records);
+    }
+
+    private void startHandler() {
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (isOnline() && !connectionEstablished) {
+                    initializeApp();
+                    handler.removeCallbacks(this);
+                } else {
+                    Log.i(TAG, "Huna Net ");
+                    handler.postDelayed(this, 100);
+                }
+            }
+        };
+        handler.postDelayed(runnable, 100);
     }
 
     private void startRegistration() {
@@ -159,6 +199,7 @@ public class Home extends AppCompatActivity {
                     .repeat(1)
                     .playOn(findViewById(R.id.AH_logoS));
 
+
             new Handler().postDelayed(() -> initRegistration(), 2000);
         }, 300);
         x.setVisibility(View.VISIBLE);
@@ -167,6 +208,9 @@ public class Home extends AppCompatActivity {
     }
 
     private void initRegistration() {
+        View view = findViewById(R.id.AH_progressBar);
+        view.startAnimation(animations.fadeIn);
+        view.setVisibility(View.VISIBLE);
         new Handler().postDelayed(() -> {
             if (preferenceManger.isDL) {
                 startActivity(new Intent(Home.this, UserAuthorization.class));
@@ -234,12 +278,7 @@ public class Home extends AppCompatActivity {
                     phobias.add(p);
                 }
             }
-            analysisAdapter = new PhobiaAnalysisAdapter(phobias, Home.this, new PhobiaAnalysisAdapter.AdapterInterface() {
-                @Override
-                public void onItemClick(Phobia phobia, int position) {
-                    openPhobiaDetails(phobia, position);
-                }
-            });
+            analysisAdapter = new PhobiaAnalysisAdapter(phobias, Home.this, this::openPhobiaDetails);
             if (phobias.size() == 0) {
                 phobiaOptions.setVisibility(View.GONE);
             } else {

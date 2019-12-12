@@ -114,9 +114,9 @@ public class Record {
         }
     }
 
-    public Date getDate() {
+    public Long getDate() {
         try {
-            return Time.getDate(recordDate, recordTime);
+            return Time.getDate(recordDate, recordTime).getTimeInMillis();
         } catch (ParseException e) {
             e.printStackTrace();
         }

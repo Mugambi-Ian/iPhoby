@@ -1,6 +1,8 @@
 package com.iCropal.iPhobia.Ui.Store;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -51,6 +53,9 @@ public class Store extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         circularReveal = new CircularReveal(findViewById(R.id.AIS_rootView));
         animations = new Animations(this);
         storeView = findViewById(R.id.AIS_storeMenu);

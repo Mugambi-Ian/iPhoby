@@ -2,7 +2,9 @@ package com.iCropal.iPhobia.Ui.RecordsUi
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -22,11 +24,23 @@ class RecordHeartBeat : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_session)
-
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
     }
 
     override fun onBackPressed() {
         heartBeatManager?.onFinish()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        if (heartBeatManager == null) {
+            heartBeatManager = HeartBeatManager()
+            heartBeatManager!!.init(this)
+        } else {
+            heartBeatManager!!.initData()
+        }
     }
 
     fun startWithPermissionCheck() {
@@ -76,7 +90,10 @@ class RecordHeartBeat : AppCompatActivity() {
         if (heartBeatManager == null) {
             heartBeatManager = HeartBeatManager()
             heartBeatManager!!.init(this)
+        } else {
+            heartBeatManager!!.initData()
         }
+
 
     }
 

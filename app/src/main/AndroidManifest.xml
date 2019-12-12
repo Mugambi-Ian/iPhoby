@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
@@ -20,21 +19,24 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Ui.User.UserAuthorization"
-            android:screenOrientation="portrait" />
+
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Ui.User.AccountInformation"
-            android:screenOrientation="portrait" />
+
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Ui.Store.Store"
-            android:screenOrientation="portrait"
-            android:theme="@style/CircularReveal" />
+
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Ui.Settings.Settings"
-            android:screenOrientation="portrait"
-            android:theme="@style/CircularReveal" />
+
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Ui.Home.Home"
-            android:screenOrientation="portrait">
+
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,10 +46,10 @@
         <activity
             android:name=".Ui.RecordsUi.RecordHeartBeat"
             android:screenOrientation="sensorPortrait"
-            android:theme="@style/CircularReveal" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Ui.User.UserProfile"
-            android:screenOrientation="portrait" />
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

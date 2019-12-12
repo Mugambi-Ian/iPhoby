@@ -160,7 +160,7 @@ public class HeartBeatManager {
         sessionHandler.postDelayed(sessionRunnable, delay);
     }
 
-    private void initData() {
+    public void initData() {
         recordHeartBeat.startWithPermissionCheck();
         recordHeartBeat.findViewById(R.id.ARHB_layout).setVisibility(View.VISIBLE);
         recordHeartBeat.findViewById(R.id.ARHB_template).setVisibility(View.GONE);
@@ -266,12 +266,7 @@ public class HeartBeatManager {
         View z = recordHeartBeat.findViewById(R.id.ARHB_btnDone);
         z.startAnimation(animations.slideLeft);
         z.setVisibility(View.VISIBLE);
-        z.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveBpm(((TextView) recordHeartBeat.findViewById(R.id.ARHB_bpmTextView)).getText().toString());
-            }
-        });
+        z.setOnClickListener(view -> saveBpm(((TextView) recordHeartBeat.findViewById(R.id.ARHB_bpmTextView)).getText().toString()));
         CameraSupport camera = heartRateOmeter.getCameraSupport();
         camera.stopPreview();
         camera.setPreviewCallback(null);
@@ -423,7 +418,7 @@ public class HeartBeatManager {
         recordHeartBeat.setHeartBeatManager(null);
         vibratorOn = false;
         endEndSListener();
-        if (!stopReading) {
+        if (!stopReading && heartRateOmeter.getCameraSupport()!= null) {
             CameraSupport camera = heartRateOmeter.getCameraSupport();
             if (camera != null) {
                 camera.stopPreview();

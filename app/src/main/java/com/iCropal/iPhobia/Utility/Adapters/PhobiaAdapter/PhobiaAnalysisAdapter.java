@@ -1,6 +1,6 @@
 package com.iCropal.iPhobia.Utility.Adapters.PhobiaAdapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +15,6 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.bumptech.glide.Glide;
 import com.iCropal.iPhobia.DataModel.Phobia;
 import com.iCropal.iPhobia.R;
-import com.iCropal.iPhobia.Utility.Transmittors.RuntimeData;
 
 import java.util.ArrayList;
 
@@ -23,7 +22,7 @@ public class PhobiaAnalysisAdapter extends PagerAdapter {
 
     private ArrayList<PhobiaProcessed> mData;
     private LayoutInflater layoutInflater;
-    private Context context;
+    private Activity context;
     private AdapterInterface adapterInterface;
 
     public interface AdapterInterface {
@@ -39,9 +38,9 @@ public class PhobiaAnalysisAdapter extends PagerAdapter {
         }
     }
 
-    public PhobiaAnalysisAdapter(ArrayList<Phobia> mData, Context context, AdapterInterface adapterInterface) {
-        this.mData = getData(mData);
+    public PhobiaAnalysisAdapter(ArrayList<Phobia> mData, Activity context, AdapterInterface adapterInterface) {
         this.context = context;
+        this.mData = getData(mData);
         this.adapterInterface = adapterInterface;
     }
 
@@ -52,17 +51,19 @@ public class PhobiaAnalysisAdapter extends PagerAdapter {
 
         }
         for (PhobiaProcessed x : r) {
-            if (x.phobia.getPhobiaId().equals("Arachnophobia")) {
-                x.backgroundDrawable = ContextCompat.getDrawable(RuntimeData.home, R.drawable.spider);
-            }
-            if (x.phobia.getPhobiaId().equals("Hydrophobia")) {
-                x.backgroundDrawable = (ContextCompat.getDrawable(RuntimeData.home, R.drawable.water));
-            }
-            if (x.phobia.getPhobiaId().equals("Acrophobia")) {
-                x.backgroundDrawable = (ContextCompat.getDrawable(RuntimeData.home, R.drawable.height));
-            }
-            if (x.phobia.getPhobiaId().equals("Agoraphobia")) {
-                x.backgroundDrawable = (ContextCompat.getDrawable(RuntimeData.home, R.drawable.crowd));
+            if (x != null) {
+                if (x.phobia.getPhobiaId().equals("Arachnophobia")) {
+                    x.backgroundDrawable = ContextCompat.getDrawable(context, R.drawable.spider);
+                }
+                if (x.phobia.getPhobiaId().equals("Hydrophobia")) {
+                    x.backgroundDrawable = (ContextCompat.getDrawable(context, R.drawable.water));
+                }
+                if (x.phobia.getPhobiaId().equals("Acrophobia")) {
+                    x.backgroundDrawable = ContextCompat.getDrawable(context, R.drawable.height);
+                }
+                if (x.phobia.getPhobiaId().equals("Agoraphobia")) {
+                    x.backgroundDrawable = ContextCompat.getDrawable(context, R.drawable.crowd);
+                }
             }
         }
         return r;

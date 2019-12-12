@@ -81,11 +81,11 @@ public class Time {
         return longFormat.format(c.getTime());
     }
 
-    public static Date getDate(String recordDate, String recordTime) throws ParseException {
+    public static Calendar getDate(String recordDate, String recordTime) throws ParseException {
         Calendar calendar = Calendar.getInstance();
         DateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm aa");
         String date = recordDate + " " + recordTime;
         calendar.setTime(format.parse(date));
-        return calendar.getTime();
+        return calendar;
     }
 }

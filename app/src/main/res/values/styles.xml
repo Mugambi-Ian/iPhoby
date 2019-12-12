@@ -1,11 +1,15 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+    <style name="ProgressBar">
+        <item name="android:indeterminateTint">#9575CD</item>
         <item name="android:fontFamily">@font/light</item>
     </style>
 
-    <style name="CircularReveal" parent="AppTheme">
-        <item name="android:windowIsTranslucent">true</item>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:fontFamily">@font/light</item>
+        <item name="android:windowIsTranslucent">false</item>
     </style>
 
     <style name="DialogBox">

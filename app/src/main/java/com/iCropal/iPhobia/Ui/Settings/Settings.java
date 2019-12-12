@@ -1,5 +1,7 @@
 package com.iCropal.iPhobia.Ui.Settings;
 
+import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,8 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         circularReveal = new CircularReveal(findViewById(R.id.AS_rootView));
         circularReveal.onActivityCreate(getIntent());
-
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 }
