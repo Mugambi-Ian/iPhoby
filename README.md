@@ -1,0 +1,2 @@
+# iPhoby
+iPhoby is a subversive technological‌ ‌advancement‌ ‌that‌ ‌makes‌ ‌the‌ ‌treatment‌ ‌of‌ ‌phobias‌ ‌a‌ ‌seamless,‌ ‌accurate‌ ‌and‌ ‌practical‌ ‌process.‌ ‌Through‌ ‌the‌ ‌use‌ ‌of‌ ‌virtual‌ ‌reality‌ ‌and‌ ‌mobile‌ ‌applications‌ ‌we‌ ‌have‌ ‌developed,‌ ‌treatment,‌ ‌recording‌ ‌and‌ ‌progress‌ ‌tracking‌ ‌become‌ ‌as‌ ‌easy‌ ‌as‌ ‌you‌ ‌receiving‌ ‌your‌ ‌treatment‌ ‌from‌ ‌home.‌iPhoby was developed for competional purposes, Microsoft's Imagine Cup to be specific.
